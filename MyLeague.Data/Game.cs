@@ -22,7 +22,7 @@ namespace MyLeague.Data
         public Nullable<double> Latitude { get; set; }
         public Nullable<double> Longitude { get; set; }
     
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
+        public virtual UserLeague UserLeague { get; set; }
+        public virtual UserLeague UserLeague1 { get; set; }
     }
 }

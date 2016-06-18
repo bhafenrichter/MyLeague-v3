@@ -1,0 +1,19 @@
+﻿<ion-view title="Login">
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
+        <h1 style="text-align:center;">MyLeagues v 0.1</h1>
+        <div class="card" style="width:80%; margin:30px auto;">
+            <div class="list">
+                <label class="item item-input">
+                    <input type="text" placeholder="Username" ng-model="Username" />
+                </label>
+                <label class="item item-input">
+                    <input type="password" placeholder="Password" ng-model="Password" />
+                </label>
+
+                <button class="button button-balanced button-block" style="margin:15px auto; width:95%;" ng-click="Login(Username, Password)">Login</button>
+                <!--<button class="button button-positive button-block" style="margin:15px auto; width:95%;">Create Account with Facebook</button>-->
+                <a href="#/Create" class="button button-balanced button-block" style="margin:15px auto; width:95%;">Create Account</a>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

@@ -63,12 +63,13 @@
           <Property Name="PointsScored" Type="float" />
           <Property Name="PointsAllowed" Type="float" />
           <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreatedOn" Type="datetime" />
         </EntityType>
         <Association Name="FK_Game_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserLeague" Type="Self.UserLeague" Multiplicity="1" />
           <End Role="Game" Type="Self.Game" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="User">
+            <Principal Role="UserLeague">
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Game">
@@ -77,10 +78,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Game_User1">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserLeague" Type="Self.UserLeague" Multiplicity="1" />
           <End Role="Game" Type="Self.Game" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="User">
+            <Principal Role="UserLeague">
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Game">
@@ -119,11 +120,11 @@
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLeague" EntityType="Self.UserLeague" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Game_User" Association="Self.FK_Game_User">
-            <End Role="User" EntitySet="User" />
+            <End Role="UserLeague" EntitySet="UserLeague" />
             <End Role="Game" EntitySet="Game" />
           </AssociationSet>
           <AssociationSet Name="FK_Game_User1" Association="Self.FK_Game_User1">
-            <End Role="User" EntitySet="User" />
+            <End Role="UserLeague" EntitySet="UserLeague" />
             <End Role="Game" EntitySet="Game" />
           </AssociationSet>
           <AssociationSet Name="FK_UserLeague_League" Association="Self.FK_UserLeague_League">
@@ -151,8 +152,8 @@
           <Property Name="OpponentScore" Type="Double" Nullable="false" />
           <Property Name="Latitude" Type="Double" />
           <Property Name="Longitude" Type="Double" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Game_User" FromRole="Game" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.FK_Game_User1" FromRole="Game" ToRole="User" />
+          <NavigationProperty Name="UserLeague" Relationship="Self.FK_Game_User" FromRole="Game" ToRole="UserLeague" />
+          <NavigationProperty Name="UserLeague1" Relationship="Self.FK_Game_User1" FromRole="Game" ToRole="UserLeague" />
         </EntityType>
         <EntityType Name="League">
           <Key>
@@ -188,8 +189,6 @@
           <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Salt" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Games" Relationship="Self.FK_Game_User" FromRole="User" ToRole="Game" />
-          <NavigationProperty Name="Games1" Relationship="Self.FK_Game_User1" FromRole="User" ToRole="Game" />
           <NavigationProperty Name="UserLeagues" Relationship="Self.FK_UserLeague_User" FromRole="User" ToRole="UserLeague" />
         </EntityType>
         <EntityType Name="UserLeague">
@@ -204,14 +203,17 @@
           <Property Name="PointsScored" Type="Double" />
           <Property Name="PointsAllowed" Type="Double" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Games" Relationship="Self.FK_Game_User" FromRole="UserLeague" ToRole="Game" />
+          <NavigationProperty Name="Games1" Relationship="Self.FK_Game_User1" FromRole="UserLeague" ToRole="Game" />
           <NavigationProperty Name="League" Relationship="Self.FK_UserLeague_League" FromRole="UserLeague" ToRole="League" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserLeague_User" FromRole="UserLeague" ToRole="User" />
         </EntityType>
         <Association Name="FK_Game_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserLeague" Type="Self.UserLeague" Multiplicity="1" />
           <End Role="Game" Type="Self.Game" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="User">
+            <Principal Role="UserLeague">
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Game">
@@ -220,10 +222,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Game_User1">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserLeague" Type="Self.UserLeague" Multiplicity="1" />
           <End Role="Game" Type="Self.Game" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="User">
+            <Principal Role="UserLeague">
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Game">
@@ -262,11 +264,11 @@
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="UserLeagues" EntityType="Self.UserLeague" />
           <AssociationSet Name="FK_Game_User" Association="Self.FK_Game_User">
-            <End Role="User" EntitySet="Users" />
+            <End Role="UserLeague" EntitySet="UserLeagues" />
             <End Role="Game" EntitySet="Games" />
           </AssociationSet>
           <AssociationSet Name="FK_Game_User1" Association="Self.FK_Game_User1">
-            <End Role="User" EntitySet="Users" />
+            <End Role="UserLeague" EntitySet="UserLeagues" />
             <End Role="Game" EntitySet="Games" />
           </AssociationSet>
           <AssociationSet Name="FK_UserLeague_League" Association="Self.FK_UserLeague_League">
@@ -345,6 +347,7 @@
                 <ScalarProperty Name="PointsScored" ColumnName="PointsScored" />
                 <ScalarProperty Name="PointsAllowed" ColumnName="PointsAllowed" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

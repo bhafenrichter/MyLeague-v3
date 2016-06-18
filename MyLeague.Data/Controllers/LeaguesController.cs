@@ -35,19 +35,39 @@ namespace MyLeague.Data.Controllers
             return Ok(league);
         }
 
-        // POST: api/Leagues
-        [ResponseType(typeof(League))]
-        public IHttpActionResult PostLeague(League league)
+        [Route("api/GetLeaguesForUser")]
+        public IEnumerable<League> GetLeaguesForUser(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var query = db.Leagues
+                            .Join(db.UserLeagues, league => league.ID, userleague => userleague.LeagueID, (league,userleague) => new { League = league, UserLeague = userleague })
+                            .Where(x => x.UserLeague.UserID == id)
+                            .Select(x => x.League)
+                            .ToList();
+            return query;
+        }
 
-            db.Leagues.Add(league);
+        [Route("api/CreateLeague")]
+        public void CreateLeague(string name, string type, int userid)
+        {
+            League l = new League();
+            l.LeagueName = name;
+            l.LeagueType = type;
+            l.CreatedOn = DateTime.Now;
+            l.IsDeleted = false;
+            db.Leagues.Add(l);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = league.ID }, league);
+            UserLeague ul = new UserLeague();
+            ul.UserID = userid;
+            ul.PointsAllowed = 0;
+            ul.PointsScored = 0;
+            ul.Wins = 0;
+            ul.Losses = 0;
+            ul.LeagueID = l.ID;
+            ul.IsDeleted = false;
+            ul.CreatedOn = DateTime.Now;
+            db.UserLeagues.Add(ul);
+            db.SaveChanges();
         }
 
         // DELETE: api/Leagues/5

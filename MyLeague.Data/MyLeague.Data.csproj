@@ -273,6 +273,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
+    <Compile Include="Services\SecurityService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="User.cs">
       <DependentUpon>MyLeagueModel.tt</DependentUpon>
@@ -293,6 +294,7 @@
       <DependentUpon>MyLeagueModel.edmx</DependentUpon>
       <LastGenOutput>MyLeagueModel.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="MyLeagueModel.edmx.sql" />
     <Content Include="MyLeagueModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>MyLeagueModel.edmx</DependentUpon>

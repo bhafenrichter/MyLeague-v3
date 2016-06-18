@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using MyLeague.Data;
+using MyLeague.Data.Services;
+using System.Data.Entity;
 
 namespace MyLeague.Data.Controllers
 {
@@ -21,14 +23,32 @@ namespace MyLeague.Data.Controllers
         {
             return db.Users;
         }
-
-        [Route("api/Create")]
-        public void CreateUser(User user)
+        
+        [Route("api/Login")]
+        public User Login(string username, string password)
         {
+            var user = SecurityService.Login(username, password);
             if(user != null)
             {
+                return user;
+            }else
+            {
+                return null;
+            }
+        }
+
+        [Route("api/Create")]
+        public void CreateUser(string email, string password, string firstname, string lastname)
+        {
+            User user = new Data.User();
+            user.Email = email;
+            user.Password = password;
+            user.FirstName = firstname;
+            user.LastName = lastname;
+            if(user.Email != "" && user.Password != "")
+            {
                 user.CreatedOn = DateTime.Now;
-                db.Users.Add(user);
+                user = SecurityService.CreateAccount(user);
             }
         }
         // GET: api/Users/5
