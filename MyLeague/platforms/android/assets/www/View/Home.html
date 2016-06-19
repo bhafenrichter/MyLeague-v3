@@ -1,11 +1,11 @@
-﻿<ion-view title="Login">
+﻿<ion-view title="MyLeagues">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
         <div ng-repeat="league in User.Leagues">
             <div class="card">
                 <div class="item item-text-wrap">
                     <div class="row">
 
-                        <a class="item item-thumbnail-left" href="#/Home/{{league.ID}}">
+                        <a class="item item-thumbnail-left" href="#/LeagueMenu/id/{{league.ID}}/LeagueHome/id/{{league.ID}}">
                             <h2>{{league.LeagueName}}</h2>
                             <p>{{league.LeagueType}}</p>
                             <i>{{league.UserLeagues.length}} Members</i>

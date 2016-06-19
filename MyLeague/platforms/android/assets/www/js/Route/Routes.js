@@ -26,6 +26,13 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
         controller: 'MenuController'
     })
 
+    .state('LeagueMenu', {
+        url: '/LeagueMenu/id/:id',
+        abstract: true,
+        templateUrl: 'View/LeagueMenu.html',
+        controller: 'LeagueMenuController'
+    })
+
     .state('Menu.Home', {
         url: '/Home',
         views: {
@@ -36,14 +43,16 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
         }
     })
 
-    .state('Menu.Profile', {
-        url: '/Profile',
-        views: {
-            'MenuContent': {
-                templateUrl: 'View/Profile.html',
-                controller: 'ProfileController'
-            }
-        }
+    .state('Profile', {
+        url: '/Profile/id/:id',
+        templateUrl: 'View/Profile.html',
+        controller: 'ProfileController'
+    })
+
+    .state('Schedule', {
+        url: '/Schedule/id/:id',
+        templateUrl: 'View/Schedule.html',
+        controller: 'ScheduleController'
     })
 
     .state('CreateLeague', {
@@ -52,6 +61,22 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
         controller: 'CreateLeagueController'
     })
 
+    .state('LeagueMenu.LeagueHome', {
+        url: '/LeagueHome/id/:id',
+        views:{
+            'MenuContent': {
+                templateUrl: 'View/LeagueHome.html',
+                controller: 'LeagueHomeController'
+            }
+        }
+        
+    })
+
+    .state('CreateGame', {
+        url: '/CreateGame/id/:id',
+        templateUrl: 'View/CreateGame.html',
+        controller: 'CreateGameController'
+    })
 
 
     // if none of the above states are matched, use this as the fallback

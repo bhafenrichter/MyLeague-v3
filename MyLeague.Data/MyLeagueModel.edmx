@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MyLeaguesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MyLeaguesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Game">
           <Key>
             <PropertyRef Name="ID" />
@@ -16,6 +16,8 @@
           <Property Name="OpponentScore" Type="float" Nullable="false" />
           <Property Name="Latitude" Type="float" />
           <Property Name="Longitude" Type="float" />
+          <Property Name="LeagueID" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="League">
           <Key>
@@ -43,7 +45,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" />
           <Property Name="Email" Type="nvarchar" MaxLength="100" />
@@ -64,6 +66,7 @@
           <Property Name="PointsAllowed" Type="float" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="Ties" Type="int" />
         </EntityType>
         <Association Name="FK_Game_User">
           <End Role="UserLeague" Type="Self.UserLeague" Multiplicity="1" />
@@ -136,8 +139,7 @@
             <End Role="UserLeague" EntitySet="UserLeague" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MyLeaguesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -154,6 +156,8 @@
           <Property Name="Longitude" Type="Double" />
           <NavigationProperty Name="UserLeague" Relationship="Self.FK_Game_User" FromRole="Game" ToRole="UserLeague" />
           <NavigationProperty Name="UserLeague1" Relationship="Self.FK_Game_User1" FromRole="Game" ToRole="UserLeague" />
+          <Property Name="LeagueID" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="League">
           <Key>
@@ -208,6 +212,7 @@
           <NavigationProperty Name="Games1" Relationship="Self.FK_Game_User1" FromRole="UserLeague" ToRole="Game" />
           <NavigationProperty Name="League" Relationship="Self.FK_UserLeague_League" FromRole="UserLeague" ToRole="League" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserLeague_User" FromRole="UserLeague" ToRole="User" />
+          <Property Name="Ties" Type="Int32" />
         </EntityType>
         <Association Name="FK_Game_User">
           <End Role="UserLeague" Type="Self.UserLeague" Multiplicity="1" />
@@ -289,6 +294,8 @@
           <EntitySetMapping Name="Games">
             <EntityTypeMapping TypeName="MyLeaguesModel.Game">
               <MappingFragment StoreEntitySet="Game">
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="LeagueID" ColumnName="LeagueID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="OpponentID" ColumnName="OpponentID" />
@@ -339,6 +346,7 @@
           <EntitySetMapping Name="UserLeagues">
             <EntityTypeMapping TypeName="MyLeaguesModel.UserLeague">
               <MappingFragment StoreEntitySet="UserLeague">
+                <ScalarProperty Name="Ties" ColumnName="Ties" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="LeagueID" ColumnName="LeagueID" />

@@ -1,0 +1,29 @@
+﻿<ion-view title="MyLeagues">
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
+        <div ng-if="League.Games.length">
+            <div ng-repeat="game in League.Games">
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <div class="row">
+                            <p>{{league.CreatedOn}}</p>
+                            <a class="item item-thumbnail-left" href="#/Game/id/{{league.ID}}">
+                                <h2>{{league.LeagueName}}</h2>
+                                <p>{{league.LeagueType}}</p>
+                                <i>{{league.UserLeagues.length}} Members</i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="!League.Games.length" style="height:50%; margin-top:50%;">
+            <img src="https://cdn0.iconfinder.com/data/icons/bicon/24/editor_document_file_empty_pencil_pen_edit_write_2-512.png" style="width:100px; height:100px; margin: 0 auto; display:block;" />
+            <h4 style="text-align:center;">No games to report.</h4>
+        </div>
+        
+        <!-- Add Games -->
+        <div style="position:absolute; right:25px; bottom:25px;">
+            <a href="#/CreateGame/id/{{Model.League.ID}}" class="button button-positive">+</a>
+        </div>
+    </ion-content>
+</ion-view>

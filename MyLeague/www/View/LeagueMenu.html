@@ -1,0 +1,66 @@
+﻿<ion-side-menus>
+    <ion-side-menu-content>
+        <ion-nav-bar class="bar-stable nav-title-slide-ios7">
+            <ion-nav-back-button class="button-clear"><i class="icon ion-ios7-arrow-back"></i> Back</ion-nav-back-button>
+        </ion-nav-bar>
+        <ion-nav-view name="MenuContent" animation="slide-left-right"></ion-nav-view>
+    </ion-side-menu-content>
+
+    <ion-side-menu side="right">
+        <header class="bar bar-header bar-stable">
+            <h1 class="title">Standings</h1>
+        </header>
+        <ion-content class="has-header">
+            <ion-list>
+                <div ng-repeat="userleague in Model.UserLeagues">
+                    <ion-item menu-close href="#/Profile/id/{{userleague.ID}}">
+                        <h2>{{$index + 1}}. {{userleague.User.FirstName}} {{userleague.User.LastName}}</h2>
+                        <p style="margin-left:20px;">{{userleague.Wins}} - {{userleague.Losses}}</p>
+                    </ion-item>
+                </div>
+                
+                <ion-item menu-close>
+                    <button class="button button-block button-assertive" ng-click="openModal()">Add Member to League</button>
+                </ion-item>
+            </ion-list>
+        </ion-content>
+    </ion-side-menu>
+</ion-side-menus>
+
+<script id="templates/modal.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">Search Users</h1>
+            <button class="button button-clear button-primary" ng-click="modal.hide()">Cancel</button>
+        </ion-header-bar>
+        <ion-content class="padding">
+            <div class="row">
+                <div class="col-90">
+                    <label class="item item-input">
+                        <span class="input-label">Search</span>
+                        <input type="text" ng-model="searchText">
+                    </label>
+                </div>
+                <div class="col-10">
+                    <button ng-click="SearchUsers(searchText)"><i class="ion ion-android-search"></i></button>
+                </div>
+            </div>
+            
+            <div class="list">
+                <div class="item" ng-repeat="User in Model.SearchResults">
+                    <table ng-click="AddUserToLeague(User.ID, Model.League.ID)">
+                        <tr>
+                            <td rowspan="2">
+                                <img src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:50px; height:50px;margin: 0 auto; display:block;" />
+                            </td>
+                            <td style="position:relative; bottom:25px; left:15px;">
+                                <h2>{{User.FirstName}} {{User.LastName}}</h2>
+                                
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </ion-content>
+    </ion-modal-view>
+</script>

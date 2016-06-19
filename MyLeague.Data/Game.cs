@@ -21,6 +21,8 @@ namespace MyLeague.Data
         public double OpponentScore { get; set; }
         public Nullable<double> Latitude { get; set; }
         public Nullable<double> Longitude { get; set; }
+        public int LeagueID { get; set; }
+        public System.DateTime CreatedOn { get; set; }
     
         public virtual UserLeague UserLeague { get; set; }
         public virtual UserLeague UserLeague1 { get; set; }
