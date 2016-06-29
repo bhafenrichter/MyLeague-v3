@@ -1,8 +1,8 @@
 ﻿<ion-side-menus>
     <ion-side-menu-content>
-        <ion-nav-bar class="bar-stable nav-title-slide-ios7">
+        <!--<ion-nav-bar class="bar-stable nav-title-slide-ios7">
             <ion-nav-back-button class="button-clear"><i class="icon ion-ios7-arrow-back"></i> Back</ion-nav-back-button>
-        </ion-nav-bar>
+        </ion-nav-bar>-->
         <ion-nav-view name="MenuContent" animation="slide-left-right"></ion-nav-view>
     </ion-side-menu-content>
 
@@ -13,7 +13,7 @@
         <ion-content class="has-header">
             <ion-list>
                 <div ng-repeat="userleague in Model.UserLeagues">
-                    <ion-item menu-close href="#/Profile/id/{{userleague.ID}}">
+                    <ion-item menu-toggle href="#/LeagueMenu/id/{{Model.League.ID}}/Profile/id/{{userleague.ID}}">
                         <h2>{{$index + 1}}. {{userleague.User.FirstName}} {{userleague.User.LastName}}</h2>
                         <p style="margin-left:20px;">{{userleague.Wins}} - {{userleague.Losses}}</p>
                     </ion-item>

@@ -1,7 +1,7 @@
 ﻿var module = angular.module('AccountModule', []);
 
-var baseurl = "http://localhost:51147";
-
+//var baseurl = "http://localhost:51147";
+var baseurl = "http://myleague-data.azurewebsites.net";
 module.service('AccountService', ['$http', function ($http) {
     var service = {};
 

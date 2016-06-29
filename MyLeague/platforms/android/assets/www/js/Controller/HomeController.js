@@ -4,7 +4,14 @@ var module = angular.module('HomeController', []);
 module.controller('LoginController', ['$scope', 'PopupService', 'AccountService', '$state', '$rootScope', function ($scope, PopupService, AccountService, $state, $rootScope) {
     $scope.Username = "bhafenri@gmail.com";
     $scope.Password = "password";
-
+    $rootScope.isLoggedIn = function () {
+        if ($rootScope.User != null) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+    
     $scope.Login = function (Username, Password) {
         //make it a promise
         AccountService.Login(Username, Password).then(function (response) {
@@ -18,6 +25,10 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
                 PopupService.MessageDialog("Your credentials were incorrect. Please try again.");
             }
         });
+    }
+
+    $rootScope.redirectToLeagueMenu = function () {
+        $state.go('Menu.Home');
     }
 }]);
 
@@ -41,7 +52,9 @@ module.controller('MenuController', ['$scope', '$state', '$window', '$rootScope'
 
 }]);
 
-module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$rootScope', 'LeagueService','$stateParams','$ionicModal', 'PopupService', function ($scope, $state, $window, $rootScope, LeagueService, $stateParams, $ionicModal, PopupService) {
+module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$rootScope', 'LeagueService', '$stateParams', '$ionicModal', 'PopupService', '$ionicNavBarDelegate', function ($scope, $state, $window, $rootScope, LeagueService, $stateParams, $ionicModal, PopupService,$ionicNavBarDelegate) {
+    $ionicNavBarDelegate.showBackButton(true);
+
     //check to see if user is logged in
     if ($rootScope.User == null) {
         $state.go('Login');
@@ -57,7 +70,7 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
 
     $scope.Model = {};
     $scope.Model._Name = "LeagueMenuController";
-    
+
     LeagueService.GetUserLeaguesForLeague($stateParams.id).then(function (response) {
         $rootScope.UserLeagues = response.data;
         $scope.Model.UserLeagues = response.data;

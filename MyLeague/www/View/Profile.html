@@ -15,6 +15,7 @@
 
             <div id="base_information" style="text-align:center; margin-top:10px;">
                 <h3>{{Model.User.FirstName}} {{Model.User.LastName}}</h3>
+                <p>{{Model.UserLeague.Wins}} - {{Model.UserLeague.Losses}}</p>
             </div>
         </div>
 
@@ -33,7 +34,7 @@
             </div>
         </div>
         <div>
-            <a href="#/Schedule/id/{{Model.UserLeague.ID}}" class="button button-positive button-full">See Full Schedule</a>
+            <a href="#/LeagueMenu/id/{{Model.League.ID}}/Schedule/id/{{Model.UserLeague.ID}}" class="button button-positive button-full">See Full Schedule</a>
         </div>
     </ion-content>
 </ion-view>

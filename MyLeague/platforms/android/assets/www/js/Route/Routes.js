@@ -1,4 +1,4 @@
-﻿var routes = angular.module('Routes', []);
+﻿var routes = angular.module('Routes', ['ui.router']);
 
 routes.config(function ($stateProvider, $urlRouterProvider) {
     // Ionic uses AngularUI Router which uses the concept of states
@@ -43,16 +43,24 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
         }
     })
 
-    .state('Profile', {
+    .state('LeagueMenu.Profile', {
         url: '/Profile/id/:id',
-        templateUrl: 'View/Profile.html',
-        controller: 'ProfileController'
+        views:{
+            'MenuContent':{
+                templateUrl: 'View/Profile.html',
+                controller: 'ProfileController'
+            }
+        }
     })
 
-    .state('Schedule', {
+    .state('LeagueMenu.Schedule', {
         url: '/Schedule/id/:id',
-        templateUrl: 'View/Schedule.html',
-        controller: 'ScheduleController'
+        views:{
+            'MenuContent':{
+                templateUrl: 'View/Schedule.html',
+                controller: 'ScheduleController'
+            }
+        }
     })
 
     .state('CreateLeague', {
@@ -72,10 +80,14 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
         
     })
 
-    .state('CreateGame', {
+    .state('LeagueMenu.CreateGame', {
         url: '/CreateGame/id/:id',
-        templateUrl: 'View/CreateGame.html',
-        controller: 'CreateGameController'
+        views:{
+            'MenuContent':{
+                templateUrl: 'View/CreateGame.html',
+                controller: 'CreateGameController'
+            }
+        }
     })
 
 
