@@ -14,6 +14,8 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
     
     $scope.Login = function (Username, Password) {
         //make it a promise
+
+        $scope.LoggingIn = true;
         AccountService.Login(Username, Password).then(function (response) {
             //console.log(response);
             if (response.data != null) {
@@ -34,7 +36,10 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
 
 module.controller('CreateController', ['$scope', 'PopupService', 'AccountService', '$state', '$rootScope', function ($scope, PopupService, AccountService, $state, $rootScope) {
     $scope.CreateAccount = function (email, password, firstname, lastname) {
-        AccountService.CreateAccount(email, password, firstname, lastname);
+        AccountService.CreateAccount(email, password, firstname, lastname).then(function (response) {
+            PopupService.MessageDialog("Account Created.");
+            $state.go("Login");
+        });
     };
 }]);
 
@@ -86,7 +91,8 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
 
     $scope.AddUserToLeague = function (userid, leagueid) {
         LeagueService.AddUserToLeague(userid, leagueid).then(function () {
-            $scope.$apply();
+            PopupService.MessageDialog("User Added.");
+            $state.go("LeagueMenu.LeagueHome");
         });
     }
 }]);
@@ -140,6 +146,7 @@ module.controller('CreateGameController', ['$scope', 'AccountService', '$rootSco
 
     $scope.CreateGame = function (user, opponent, game) {
         LeagueService.CreateGame(user, opponent, game).then(function (response) {
+            PopupService.MessageDialog("Game added to League.");
             $state.go('LeagueMenu.LeagueHome');
         });
     }

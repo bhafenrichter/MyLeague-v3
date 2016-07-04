@@ -1,1 +1,29 @@
 /* Empty. Add your own CSS if you like */
+
+    .game-entry{
+        font-size:18px;
+        padding:10px;
+    }
+
+    .game-entry .row{
+        /*padding:15px;*/
+    }
+
+    .game-entry p{
+        display:inline;
+    }
+
+    .game-entry-name{
+        position:relative;
+        bottom:5px;
+    }
+
+    .game-entry-picture{
+        border-radius:25px;
+        width:25px; 
+        height:25px;
+    }
+
+    .league-body{
+        background-color:#ECEFF1;
+    }

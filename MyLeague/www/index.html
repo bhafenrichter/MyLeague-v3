@@ -35,11 +35,10 @@
 </head>
 <body ng-app="app" animation="slide-left-right-ios7">
         <ion-nav-bar class="bar-positive" align-title="center">
-        <ion-nav-back-button>
-            <i class="icon ion-arrow-left-c"></i> Back
+        <ion-nav-back-button class="button button-clear button-icon icon ion-chevron-left">
         </ion-nav-back-button>
             <ion-nav-buttons id="league-menu-actions" side="primary">
-                <button ng-click="redirectToLeagueMenu()" ng-if="isLoggedIn()" class="button button-clear"><i class="ion ion-navicon-round"></i></button>
+                <button ng-click="redirectToLeagueMenu()" ng-if="isLoggedIn()" class="button button-clear"><i class="icon ion-navicon"></i></button>
             </ion-nav-buttons>
     </ion-nav-bar>
     <ion-nav-view></ion-nav-view>
