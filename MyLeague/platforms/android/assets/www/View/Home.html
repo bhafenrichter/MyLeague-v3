@@ -1,21 +1,24 @@
 ﻿<ion-view title="MyLeagues">
-    <ion-content overflow-scroll="true" padding="true" class="has-header">
+    <ion-content overflow-scroll="true" padding="true" class="has-header" style="background-color:lightgrey;">
         <div ng-repeat="league in User.Leagues">
-            <div class="card">
-                <div class="item item-text-wrap">
-                    <div class="row">
+            <a href="#/LeagueMenu/id/{{league.ID}}/LeagueHome/id/{{league.ID}}" style="text-decoration:none;">
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <div class="row">
 
-                        <a class="item item-thumbnail-left" href="#/LeagueMenu/id/{{league.ID}}/LeagueHome/id/{{league.ID}}">
-                            <h2>{{league.LeagueName}}</h2>
-                            <p>{{league.LeagueType}}</p>
-                            <i>{{league.UserLeagues.length}} Members</i>
-                        </a>
+                            <div class="item item-thumbnail-left">
+                                <img src="http://housing.greenlines-institute.org/sites/_conference_tourism/public/imagens/2016/programme/Plenary%20sessions.png" />
+                                <h2>{{league.LeagueName}}</h2>
+                                <p>{{league.LeagueType}}</p>
+                                <i>{{league.UserLeagues.length}} Members</i>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
         <div style="position:absolute; bottom:25px; right:25px;">
-            <a href="#/CreateLeague" class="button button-positive">+</a>
+            <a href="#/Menu/CreateLeague" class="button button-positive" style="border-radius:25px;"><i class="icon ion-plus"></i></a>
         </div>
     </ion-content>
 </ion-view>

@@ -28,6 +28,7 @@
           <Property Name="LeagueType" Type="nvarchar" MaxLength="200" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="PictureUrl" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="LeagueRequest">
           <Key>
@@ -169,6 +170,7 @@
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="UserLeagues" Relationship="Self.FK_UserLeague_League" FromRole="League" ToRole="UserLeague" />
+          <Property Name="PictureUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="LeagueRequest">
           <Key>
@@ -309,6 +311,7 @@
           <EntitySetMapping Name="Leagues">
             <EntityTypeMapping TypeName="MyLeaguesModel.League">
               <MappingFragment StoreEntitySet="League">
+                <ScalarProperty Name="PictureUrl" ColumnName="PictureUrl" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="LeagueName" ColumnName="LeagueName" />
                 <ScalarProperty Name="LeagueType" ColumnName="LeagueType" />

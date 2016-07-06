@@ -25,6 +25,7 @@ namespace MyLeague.Data.Controllers
         }
         
         [Route("api/Login")]
+        [HttpPost]
         public User Login(string username, string password)
         {
             var user = SecurityService.Login(username, password);
@@ -38,6 +39,7 @@ namespace MyLeague.Data.Controllers
         }
 
         [Route("api/Create")]
+        [HttpPost]
         public void CreateUser(string email, string password, string firstname, string lastname)
         {
             User user = new Data.User();

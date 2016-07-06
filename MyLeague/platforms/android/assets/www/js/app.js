@@ -4,7 +4,11 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 angular.module('app', ['ionic', 'Routes', 'PopupModule', 'AccountModule', 'LeagueModule', 'HomeController', 'ui.router', 'ngRoute'])
-
+.config(function($ionicConfigProvider) {
+    // remove back button previous title text
+    // use unicode em space characters to increase touch target area size of back button
+    $ionicConfigProvider.backButton.previousTitleText(false).text('');
+})
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     if(cordova.platformId === 'ios' && window.cordova && window.cordova.plugins.Keyboard) {

@@ -1,8 +1,9 @@
-﻿<style>
-
-</style>
-
-<ion-view title="{{Model.League.LeagueName}}" hide-back-button="false">
+﻿<ion-view title="{{Model.League.LeagueName}}" hide-back-button="false">
+    <ion-nav-buttons side="right">
+        <button class="button" ng-click="toggleLeagueMenu()">
+            <i class="icon ion-trophy"></i>
+        </button>
+    </ion-nav-buttons>
     <ion-content overflow-scroll="true" padding="true" class="has-header league-body">
         <div>
             <div ng-repeat="game in Games">
@@ -50,10 +51,11 @@
             <h4 style="text-align:center;">No games to report.</h4>
         </div>
         
-        <!-- Add Games -->
-        <div style="position:fixed; right:25px; bottom:25px; border-radius:25px;">
-            <a href="#/LeagueMenu/id/{{Model.League.ID}}/CreateGame/id/{{Model.League.ID}}" class="button button-positive"><i class="icon ion-plus"></i></a>
-        </div>
+       
     </ion-content>
+    <!-- Add Games -->
+    <div style="position:fixed; right:25px; bottom:25px;">
+        <a href="#/LeagueMenu/id/{{Model.League.ID}}/CreateGame/id/{{Model.League.ID}}" class="button button-positive" style="border-radius:25px; box-shadow:0 0 10px rgba(0,0,0,0.6);"><i class="icon ion-plus"></i></a>
+    </div>
 </ion-view>
 

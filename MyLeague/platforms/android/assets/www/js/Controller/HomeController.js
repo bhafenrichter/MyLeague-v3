@@ -14,8 +14,10 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
     
     $scope.Login = function (Username, Password) {
         //make it a promise
+
+        $scope.LoggingIn = true;
         AccountService.Login(Username, Password).then(function (response) {
-            //console.log(response);
+            console.log(response);
             if (response.data != null) {
                 //user exists, redirect to home page
                 $rootScope.User = response.data;
@@ -34,7 +36,10 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
 
 module.controller('CreateController', ['$scope', 'PopupService', 'AccountService', '$state', '$rootScope', function ($scope, PopupService, AccountService, $state, $rootScope) {
     $scope.CreateAccount = function (email, password, firstname, lastname) {
-        AccountService.CreateAccount(email, password, firstname, lastname);
+        AccountService.CreateAccount(email, password, firstname, lastname).then(function (response) {
+            PopupService.MessageDialog("Account Created.");
+            $state.go("Login");
+        });
     };
 }]);
 
@@ -52,7 +57,7 @@ module.controller('MenuController', ['$scope', '$state', '$window', '$rootScope'
 
 }]);
 
-module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$rootScope', 'LeagueService', '$stateParams', '$ionicModal', 'PopupService', '$ionicNavBarDelegate', function ($scope, $state, $window, $rootScope, LeagueService, $stateParams, $ionicModal, PopupService,$ionicNavBarDelegate) {
+module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$rootScope', 'LeagueService', '$stateParams', '$ionicModal', 'PopupService', '$ionicNavBarDelegate', '$ionicSideMenuDelegate', function ($scope, $state, $window, $rootScope, LeagueService, $stateParams, $ionicModal, PopupService, $ionicNavBarDelegate, $ionicSideMenuDelegate) {
     $ionicNavBarDelegate.showBackButton(true);
 
     //check to see if user is logged in
@@ -86,9 +91,14 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
 
     $scope.AddUserToLeague = function (userid, leagueid) {
         LeagueService.AddUserToLeague(userid, leagueid).then(function () {
-            $scope.$apply();
+            PopupService.MessageDialog("User Added.");
+            $state.go("LeagueMenu.LeagueHome");
         });
     }
+
+    $rootScope.toggleLeagueMenu = function () {
+        $ionicSideMenuDelegate.toggleRight();
+    };
 }]);
 
 module.controller('HomeController', ['$scope', '$rootScope', 'LeagueService', function ($scope, $rootScope, LeagueService) {
@@ -134,12 +144,17 @@ module.controller('CreateGameController', ['$scope', 'AccountService', '$rootSco
     $scope.Model.UserLeagues = $rootScope.UserLeagues;
 
     $scope.SelectUser = function (user) {
-        $scope.Model.Opponent = user;
-        $scope.closeModal();
+        if (user.UserID != $scope.Model.User.UserID) {
+            $scope.Model.Opponent = user;
+            $scope.closeModal();
+        } else {
+            PopupService.MessageDialog("You cannot select yourself.");
+        }
     };
 
     $scope.CreateGame = function (user, opponent, game) {
         LeagueService.CreateGame(user, opponent, game).then(function (response) {
+            PopupService.MessageDialog("Game added to League.");
             $state.go('LeagueMenu.LeagueHome');
         });
     }

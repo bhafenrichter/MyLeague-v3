@@ -63,10 +63,14 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
         }
     })
 
-    .state('CreateLeague', {
+    .state('Menu.CreateLeague', {
         url: '/CreateLeague',
-        templateUrl: 'View/CreateLeague.html',
-        controller: 'CreateLeagueController'
+        views:{
+            'MenuContent':{
+                templateUrl: 'View/CreateLeague.html',
+                controller: 'CreateLeagueController'
+            }
+        }
     })
 
     .state('LeagueMenu.LeagueHome', {

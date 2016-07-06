@@ -17,7 +17,7 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
 
         $scope.LoggingIn = true;
         AccountService.Login(Username, Password).then(function (response) {
-            //console.log(response);
+            console.log(response);
             if (response.data != null) {
                 //user exists, redirect to home page
                 $rootScope.User = response.data;
@@ -57,7 +57,7 @@ module.controller('MenuController', ['$scope', '$state', '$window', '$rootScope'
 
 }]);
 
-module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$rootScope', 'LeagueService', '$stateParams', '$ionicModal', 'PopupService', '$ionicNavBarDelegate', function ($scope, $state, $window, $rootScope, LeagueService, $stateParams, $ionicModal, PopupService,$ionicNavBarDelegate) {
+module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$rootScope', 'LeagueService', '$stateParams', '$ionicModal', 'PopupService', '$ionicNavBarDelegate', '$ionicSideMenuDelegate', function ($scope, $state, $window, $rootScope, LeagueService, $stateParams, $ionicModal, PopupService, $ionicNavBarDelegate, $ionicSideMenuDelegate) {
     $ionicNavBarDelegate.showBackButton(true);
 
     //check to see if user is logged in
@@ -95,6 +95,10 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
             $state.go("LeagueMenu.LeagueHome");
         });
     }
+
+    $rootScope.toggleLeagueMenu = function () {
+        $ionicSideMenuDelegate.toggleRight();
+    };
 }]);
 
 module.controller('HomeController', ['$scope', '$rootScope', 'LeagueService', function ($scope, $rootScope, LeagueService) {
@@ -140,8 +144,12 @@ module.controller('CreateGameController', ['$scope', 'AccountService', '$rootSco
     $scope.Model.UserLeagues = $rootScope.UserLeagues;
 
     $scope.SelectUser = function (user) {
-        $scope.Model.Opponent = user;
-        $scope.closeModal();
+        if (user.UserID != $scope.Model.User.UserID) {
+            $scope.Model.Opponent = user;
+            $scope.closeModal();
+        } else {
+            PopupService.MessageDialog("You cannot select yourself.");
+        }
     };
 
     $scope.CreateGame = function (user, opponent, game) {
