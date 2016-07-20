@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('app', ['ionic', 'Routes', 'PopupModule', 'AccountModule', 'LeagueModule', 'HomeController', 'ui.router', 'ngRoute'])
+angular.module('app', ['ionic', 'Routes', 'PopupModule', 'AccountModule', 'LeagueModule', 'HomeController', 'ui.router', 'ngRoute', 'ionic-numberpicker'])
 .config(function($ionicConfigProvider) {
     // remove back button previous title text
     // use unicode em space characters to increase touch target area size of back button

@@ -6,14 +6,18 @@
                     <img src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:100%; height:100%;margin: 0 auto; display:block; margin-bottom:15px;" />
                     <h4 style="text-align:center; margin-bottom:0px;">{{User.FirstName.substring(0,1)}}. {{User.LastName}}</h4>
                     <p style="text-align:center;">{{Model.User.Wins}}-{{Model.User.Losses}}</p>
-                    <input type="number" style="width:100px; height:100px; border-radius:25px; text-align:center; font-size:48px; display: block; margin: 0 auto; box-shadow: inset 0 0 5px #000000;" ng-model="Game.userScore">
+
+                    <input type="number" ng-model="Game.userScore" placeholder="0"  style="width:100px; height:100px; border-radius:25px; text-align:center; font-size:48px; display: block; margin: 0 auto;" />
+
                 </div>
                 <div class="col-50">
                     <img ng-click="openModal()" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:100%; height:100%;margin: 0 auto; display:block; margin-bottom:15px;" />
                     <h4 style="text-align:center; margin-bottom:0px;" ng-if="Model.Opponent">{{Model.Opponent.User.FirstName.substring(0,1)}}. {{Model.Opponent.User.LastName}}&nbsp;</h4>
                     <h4 style="text-align:center; margin-bottom:0px;" ng-if="!Model.Opponent">&nbsp;</h4>
                     <p style="text-align:center;">{{Model.Opponent.Wins}}-{{Model.Opponent.Losses}}</p>
-                    <input type="number" style="width:100px; height:100px; border-radius:25px; text-align:center; font-size:48px; display: block; margin: 0 auto; box-shadow: inset 0 0 5px #000000;" ng-model="Game.opponentScore">
+
+                    <input type="number" ng-model="Game.opponentScore" placeholder="0" style="width:100px; height:100px; border-radius:25px; text-align:center; font-size:48px; display: block; margin: 0 auto;" />
+
                 </div>
             </div>
         </div>
@@ -31,8 +35,8 @@
         </ion-header-bar>
         <ion-content class="padding">
             <div class="list">
-                <div class="item" ng-repeat="userleague in Model.UserLeagues">
-                        <table ng-click="SelectUser(userleague)">
+                <div class="item" ng-repeat="userleague in Model.UserLeagues" ng-click="SelectUser(userleague)">
+                        <table>
                             <tr>
                                 <td rowspan="2">
                                     <img src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:50px; height:50px;margin: 0 auto; display:block;" />

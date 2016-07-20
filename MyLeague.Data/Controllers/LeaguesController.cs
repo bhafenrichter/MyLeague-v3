@@ -74,7 +74,7 @@ namespace MyLeague.Data.Controllers
         public IEnumerable<Game> GetGamesForLeague(int id)
         {
             var query = db.Games
-                .Where(x => x.LeagueID == id).ToList();
+                .Where(x => x.LeagueID == id).OrderByDescending(x => x.CreatedOn).ToList();
             return query;
         }
 
@@ -95,7 +95,7 @@ namespace MyLeague.Data.Controllers
                 g.UserID = userid;
                 g.OpponentID = opponentid;
                 g.UserScore = userscore;
-                g.OpponentScore = opponentid;
+                g.OpponentScore = opponentscore;
                 g.Latitude = lat;
                 g.Longitude = lng;
                 g.LeagueID = leagueid;
@@ -167,6 +167,33 @@ namespace MyLeague.Data.Controllers
                 db.SaveChanges();
             }
             
+        }
+
+        [Route("api/InviteUser")]
+        public void InviteUser(int userid, int inviteeid, int leagueid, string message)
+        {
+            var request = db.LeagueRequests.Create();
+            request.UserID = userid;
+            request.InviteeID = inviteeid;
+            request.LeagueID = leagueid;
+            request.Message = message;
+            request.CreatedOn = DateTime.Now;
+            request.IsDecided = false;
+            db.LeagueRequests.Add(request);
+            db.SaveChanges();
+        }
+
+        [Route("api/GetRequests")]
+        public IEnumerable<LeagueRequest> GetRequests(int userid)
+        {
+            return db.LeagueRequests.Where(x => x.UserID == userid).ToList();
+        }
+
+        public void AcceptRequest(int requestId)
+        {
+            var request = db.LeagueRequests.Where(x => x.ID == requestId).FirstOrDefault();
+            request.IsDecided = true;
+            AddUserToLeague(request.UserID, request.LeagueID);
         }
 
         // DELETE: api/Leagues/5

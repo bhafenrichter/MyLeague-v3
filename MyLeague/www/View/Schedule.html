@@ -1,22 +1,45 @@
 ﻿<ion-view title="Schedule">
-    <ion-content overflow-scroll="true" padding="true" class="has-header">
-        <div ng-if="League.Games.length">
-            <div ng-repeat="game in League.Games">
-                <div class="card">
-                    <div class="item item-text-wrap">
-                        <div class="row">
-                            <p>{{league.CreatedOn}}</p>
-                            <a class="item item-thumbnail-left" href="#/Game/id/{{league.ID}}">
-                                <h2>{{league.LeagueName}}</h2>
-                                <p>{{league.LeagueType}}</p>
-                                <i>{{league.UserLeagues.length}} Members</i>
-                            </a>
+    <ion-content overflow-scroll="true" padding="true" class="has-header league-body">
+        <div ng-repeat="game in Model.Games">
+            <div class="card" ng-click="selectGame(game.ID)">
+                <div class="game-entry">
+                    <div class="row">
+                        <div class="col-80">
+                            <div class="row">
+                                <div class="col-80">
+                                    <img class="game-entry-picture" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" />
+                                    <p class="game-entry-name" style="font-weight:bold;" ng-if="game.UserScore > game.OpponentScore">{{game.UserLeague.User.FirstName.substring(0,1)}}. {{game.UserLeague.User.LastName}}</p>
+                                    <p class="game-entry-name" ng-if="game.UserScore < game.OpponentScore">{{game.UserLeague.User.FirstName.substring(0,1)}}. {{game.UserLeague.User.LastName}}</p>
+                                </div>
+                                <div class="col-20" style="margin-top:5px;">
+                                    <p style="font-weight:bold;" ng-if="game.UserScore > game.OpponentScore">{{game.UserScore}}</p>
+                                    <p ng-if="game.UserScore < game.OpponentScore">{{game.UserScore}}</p>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-80">
+                                    <img class="game-entry-picture" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" />
+                                    <p class="game-entry-name" style="font-weight:bold;" ng-if="game.OpponentScore > game.UserScore">{{game.UserLeague1.User.FirstName.substring(0,1)}}. {{game.UserLeague1.User.LastName}}</p>
+                                    <p class="game-entry-name" ng-if="game.OpponentScore < game.UserScore">{{game.UserLeague1.User.FirstName.substring(0,1)}}. {{game.UserLeague1.User.LastName}}</p>
+
+                                </div>
+                                <div class="col-20" style="margin-top:5px;">
+                                    <p style="font-weight:bold;" ng-if="game.UserScore < game.OpponentScore">{{game.OpponentScore}}</p>
+                                    <p ng-if="game.UserScore > game.OpponentScore">{{game.OpponentScore}}</p>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-20" style="margin:auto;">
+                            {{game.CreatedOn.split('T')[0].split('-')[1]}}/{{game.CreatedOn.split('T')[0].split('-')[2]}}
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
-        <div ng-if="!League.Games.length" style="height:50%; margin-top:50%;">
+        <div ng-if="!Model.Games.length" style="height:50%; margin-top:50%;">
             <img src="https://cdn0.iconfinder.com/data/icons/bicon/24/editor_document_file_empty_pencil_pen_edit_write_2-512.png" style="width:100px; height:100px; margin: 0 auto; display:block;" />
             <h4 style="text-align:center;">No games to report.</h4>
         </div>

@@ -7,18 +7,17 @@
     </ion-side-menu-content>
 
     <ion-side-menu side="right">
-        <header class="bar bar-header bar-stable">
+        <!--<header class="bar bar-header bar-stable">
             <h1 class="title">Standings</h1>
-        </header>
+        </header>-->
         <ion-content class="has-header">
             <div class="header">
-               
+                <h4 style="text-align:center;">Current Standings</h4>
             </div>
             <ion-list>
                 <div ng-repeat="userleague in Model.UserLeagues">
                     <ion-item menu-toggle="right" href="#/LeagueMenu/id/{{Model.League.ID}}/Profile/id/{{userleague.ID}}">
-                        <h2>{{$index + 1}}. {{userleague.User.FirstName}} {{userleague.User.LastName}}</h2>
-                        <p style="margin-left:20px;">{{userleague.Wins}} - {{userleague.Losses}}</p>
+                        <h2>{{$index + 1}}. {{userleague.User.FirstName.substring(0,1)}}. {{userleague.User.LastName}}<span style="float:right; font-weight:bold;">{{userleague.Wins}}-{{userleague.Losses}}</span></h2>
                     </ion-item>
                 </div>
                 

@@ -9,7 +9,7 @@ module.service('LeagueService', ['$http', function ($http) {
     };
 
     service.CreateLeague = function (name, type, userid) {
-        $http.post(baseurl + "/api/CreateLeague?Name=" + name + "&Type=" + type + "&UserID=" + userid);
+        return $http.post(baseurl + "/api/CreateLeague?Name=" + name + "&Type=" + type + "&UserID=" + userid);
     }
 
     service.GetGamesForLeague = function (id) {
@@ -22,6 +22,8 @@ module.service('LeagueService', ['$http', function ($http) {
 
     service.CreateGame = function (user, opponent, game) {
         console.log(user);
+        console.log(opponent);
+        console.log(game);
         return $http.post(baseurl + "/api/CreateGame?" 
             + "userid=" + user.ID
             + "&opponentid=" + opponent.ID
@@ -48,6 +50,14 @@ module.service('LeagueService', ['$http', function ($http) {
 
     service.AddUserToLeague = function (userid, leagueid) {
         return $http.post(baseurl + "/api/AddUserToLeague?userid=" + userid + "&leagueid=" + leagueid);
+    }
+
+    service.GetUserForID = function (id) {
+        return $http.get(baseurl + "/api/Users/" + id);
+    }
+
+    service.GetUserLeagueForID = function (id) {
+        return $http.get(baseurl + "/api/UserLeagues/" + id);
     }
     return service;
 }]);

@@ -5,8 +5,10 @@
         </button>
     </ion-nav-buttons>
     <ion-content overflow-scroll="true" padding="true" class="has-header league-body">
-        <div>
-            <div ng-repeat="game in Games">
+            <ion-refresher pulling-text="Pull to refresh..."
+                           on-refresh="refreshLeague()">
+            </ion-refresher>
+            <div ng-repeat="game in Model.Games">
                 <div class="card" ng-click="selectGame(game.ID)">
                     <div class="game-entry">
                         <div class="row">
@@ -45,8 +47,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div ng-if="League.Games.length == 0" style="height:50%; margin-top:50%;">
+        <div ng-if="Model.Games.length == 0" style="height:50%; margin-top:50%;">
             <img src="https://cdn0.iconfinder.com/data/icons/bicon/24/editor_document_file_empty_pencil_pen_edit_write_2-512.png" style="width:100px; height:100px; margin: 0 auto; display:block;" />
             <h4 style="text-align:center;">No games to report.</h4>
         </div>

@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /*!
  * Copyright 2015 Drifty Co.
  * http://drifty.com/
@@ -3506,7 +3506,7 @@ ion-infinite-scroll {
 
 /* If you change these, change platform.scss as well */
 .has-header {
-  top: 44px; }
+  top: 42px; }
 
 .no-header {
   top: 0; }
