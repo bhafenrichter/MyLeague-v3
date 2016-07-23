@@ -42,6 +42,16 @@
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="IsDecided" Type="bit" />
         </EntityType>
+        <EntityType Name="SecurityToken">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SessionToken" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="isValid" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="ID" />
@@ -49,9 +59,9 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" />
-          <Property Name="Email" Type="nvarchar" MaxLength="100" />
-          <Property Name="Password" Type="nvarchar" MaxLength="100" />
-          <Property Name="Salt" Type="nvarchar" MaxLength="100" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Salt" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" />
         </EntityType>
         <EntityType Name="UserLeague">
@@ -93,6 +103,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SecurityToken_SecurityToken">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="SecurityToken" Type="Self.SecurityToken" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SecurityToken">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserLeague_League">
           <End Role="League" Type="Self.League" Multiplicity="1" />
           <End Role="UserLeague" Type="Self.UserLeague" Multiplicity="*" />
@@ -121,6 +143,7 @@
           <EntitySet Name="Game" EntityType="Self.Game" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="League" EntityType="Self.League" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LeagueRequest" EntityType="Self.LeagueRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SecurityToken" EntityType="Self.SecurityToken" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLeague" EntityType="Self.UserLeague" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Game_User" Association="Self.FK_Game_User">
@@ -130,6 +153,10 @@
           <AssociationSet Name="FK_Game_User1" Association="Self.FK_Game_User1">
             <End Role="UserLeague" EntitySet="UserLeague" />
             <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SecurityToken_SecurityToken" Association="Self.FK_SecurityToken_SecurityToken">
+            <End Role="User" EntitySet="User" />
+            <End Role="SecurityToken" EntitySet="SecurityToken" />
           </AssociationSet>
           <AssociationSet Name="FK_UserLeague_League" Association="Self.FK_UserLeague_League">
             <End Role="League" EntitySet="League" />
@@ -191,11 +218,12 @@
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Salt" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Salt" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="UserLeagues" Relationship="Self.FK_UserLeague_User" FromRole="User" ToRole="UserLeague" />
+          <NavigationProperty Name="SecurityTokens" Relationship="MyLeaguesModel.FK_SecurityToken_SecurityToken" FromRole="User" ToRole="SecurityToken" />
         </EntityType>
         <EntityType Name="UserLeague">
           <Key>
@@ -286,7 +314,35 @@
             <End Role="User" EntitySet="Users" />
             <End Role="UserLeague" EntitySet="UserLeagues" />
           </AssociationSet>
+          <EntitySet Name="SecurityTokens" EntityType="MyLeaguesModel.SecurityToken" />
+          <AssociationSet Name="FK_SecurityToken_SecurityToken" Association="MyLeaguesModel.FK_SecurityToken_SecurityToken">
+            <End Role="User" EntitySet="Users" />
+            <End Role="SecurityToken" EntitySet="SecurityTokens" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="SecurityToken">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SessionToken" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="MyLeaguesModel.FK_SecurityToken_SecurityToken" FromRole="SecurityToken" ToRole="User" />
+          <Property Name="isValid" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_SecurityToken_SecurityToken">
+          <End Type="MyLeaguesModel.User" Role="User" Multiplicity="1" />
+          <End Type="MyLeaguesModel.SecurityToken" Role="SecurityToken" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SecurityToken">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -359,6 +415,17 @@
                 <ScalarProperty Name="PointsAllowed" ColumnName="PointsAllowed" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SecurityTokens">
+            <EntityTypeMapping TypeName="MyLeaguesModel.SecurityToken">
+              <MappingFragment StoreEntitySet="SecurityToken">
+                <ScalarProperty Name="isValid" ColumnName="isValid" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="SessionToken" ColumnName="SessionToken" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

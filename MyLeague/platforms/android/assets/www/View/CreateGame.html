@@ -7,7 +7,7 @@
                     <h4 style="text-align:center; margin-bottom:0px;">{{User.FirstName.substring(0,1)}}. {{User.LastName}}</h4>
                     <p style="text-align:center;">{{Model.User.Wins}}-{{Model.User.Losses}}</p>
 
-                    <input type="number" ng-model="Game.userScore" placeholder="0"  style="width:100px; height:100px; border-radius:25px; text-align:center; font-size:48px; display: block; margin: 0 auto;" />
+                    <input type="number" ng-model="Game.userScore" min="0" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" placeholder="0" style="width:100px; height:100px; border-radius:25px; text-align:center; font-size:48px; display: block; margin: 0 auto;" />
 
                 </div>
                 <div class="col-50">
@@ -16,14 +16,12 @@
                     <h4 style="text-align:center; margin-bottom:0px;" ng-if="!Model.Opponent">&nbsp;</h4>
                     <p style="text-align:center;">{{Model.Opponent.Wins}}-{{Model.Opponent.Losses}}</p>
 
-                    <input type="number" ng-model="Game.opponentScore" placeholder="0" style="width:100px; height:100px; border-radius:25px; text-align:center; font-size:48px; display: block; margin: 0 auto;" />
-
+                    <input type="number" ng-model="Game.opponentScore" min="0" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" placeholder="0" style="width:100px; height:100px; border-radius:25px; text-align:center; font-size:48px; display: block; margin: 0 auto;" />
                 </div>
             </div>
+            <button ng-click="CreateGame(Model.User,Model.Opponent,Game)" class="button button-positive" style="margin:auto; width:80%; display:block;">Create Game</button>
         </div>
-        <ion-footer-bar style="padding:0px;">
-            <button ng-click="CreateGame(Model.User,Model.Opponent,Game)" class="button button-positive button-full" style="margin:0px;">Submit</button>
-        </ion-footer-bar>
+        
     </ion-content>
 </ion-view>
 

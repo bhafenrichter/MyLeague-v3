@@ -59,6 +59,15 @@ namespace MyLeague.Data.Services
                   .Select(item => item.ToString("x2")));
             }
         }
+
+        internal static string GenerateSecurityToken()
+        {
+            int size = 16;
+            var crypto = new RNGCryptoServiceProvider();
+            var token = new Byte[size];
+            crypto.GetBytes(token);
+            return Convert.ToBase64String(token);
+        }
     }
 
     

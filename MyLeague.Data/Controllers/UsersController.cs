@@ -53,6 +53,31 @@ namespace MyLeague.Data.Controllers
                 user = SecurityService.CreateAccount(user);
             }
         }
+
+        [Route("api/GenerateSecurityToken")]
+        public SecurityToken GenerateSecurityToken(int id)
+        {
+            var token = db.SecurityTokens.Create();
+            token.UserID = id;
+            token.CreatedOn = DateTime.Now;
+            token.SessionToken = SecurityService.GenerateSecurityToken();
+            token.isValid = true;
+            db.SecurityTokens.Add(token);
+            db.SaveChanges();
+            return token;
+        }
+
+        [Route("api/ValidateSecurityToken")]
+        public SecurityToken ValidateSecurityToken(int id, string token)
+        {
+            token = token.Replace(" ", "+");
+            //TODO: Add timeout for security token
+            var securityToken = db.SecurityTokens.Where(
+                x => x.UserID == id && x.SessionToken == token && x.isValid == true)
+                .FirstOrDefault();
+            return securityToken;
+        }
+
         // GET: api/Users/5
         [ResponseType(typeof(User))]
         public IHttpActionResult GetUser(int id)

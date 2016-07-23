@@ -1,7 +1,7 @@
 ﻿var module = angular.module('AccountModule', []);
 
-var baseurl = "http://localhost:51147";
-//var baseurl = "http://myleague-data.azurewebsites.net";
+//var baseurl = "http://localhost:51147";
+var baseurl = "http://myleague-data.azurewebsites.net";
 module.service('AccountService', ['$http', function ($http) {
     var service = {};
 
@@ -35,6 +35,34 @@ module.service('AccountService', ['$http', function ($http) {
 
     service.GetUser = function (UserId) {
         return $http.get(baseurl + "/api/Users/" + UserId)
+            .success(function (data) {
+                if (data != null) {
+                    return data;
+                } else {
+                    return {};
+                }
+            })
+            .error(function () {
+                return {};
+            });
+    };
+
+    service.ValidateSecurityToken = function (id, token) {
+        return $http.post(baseurl + "/api/ValidateSecurityToken?id=" + id + "&token=" + token)
+            .success(function (data) {
+                if (data != null) {
+                    return data;
+                } else {
+                    return {};
+                }
+            })
+            .error(function () {
+                return {};
+            });
+    };
+
+    service.GenerateSecurityToken = function (id, token) {
+        return $http.post(baseurl + "/api/GenerateSecurityToken?id=" + id)
             .success(function (data) {
                 if (data != null) {
                     return data;

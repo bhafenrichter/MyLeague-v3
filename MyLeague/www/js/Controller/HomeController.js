@@ -1,9 +1,22 @@
 ﻿//define the module so that app.js can recognize it
 var module = angular.module('HomeController', []);
 
-module.controller('LoginController', ['$scope', 'PopupService', 'AccountService', '$state', '$rootScope', '$ionicLoading', '$ionicHistory', function ($scope, PopupService, AccountService, $state, $rootScope, $ionicLoading, $ionicHistory) {
+module.controller('LoginController', ['$scope', 'PopupService', 'AccountService', '$state', '$rootScope', '$ionicLoading', '$ionicHistory', '$ionicSideMenuDelegate', function ($scope, PopupService, AccountService, $state, $rootScope, $ionicLoading, $ionicHistory, $ionicSideMenuDelegate) {
     $scope.Username = "bhafenri@gmail.com";
     $scope.Password = "password";
+
+
+    if (window.localStorage.getItem("UserId") != null && window.localStorage.getItem("Token")) {
+        AccountService.ValidateSecurityToken(window.localStorage.getItem("UserId"), window.localStorage.getItem("Token")).then(function (response) {
+            console.log(response);
+            $rootScope.User = response.data.User;
+            $rootScope.User.Leagues = {};
+
+            $state.go('Menu.Home');
+        });
+
+    }
+
     $rootScope.isLoggedIn = function () {
         if ($rootScope.User != null) {
             return true;
@@ -22,7 +35,15 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
                 //user exists, redirect to home page
                 $rootScope.User = response.data;
                 $rootScope.User.Leagues = {};
-                $state.go('Menu.Home');
+
+                //set user security token
+                AccountService.GenerateSecurityToken(response.data.ID).then(function (response) {
+                    console.log(response.data);
+                    window.localStorage.setItem("UserId", response.data.UserID);
+                    window.localStorage.setItem("Token", response.data.SessionToken);
+                    $state.go('Menu.Home');
+                });
+
             } else {
                 //user doesn't exist
                 PopupService.MessageDialog("Your credentials were incorrect. Please try again.");
@@ -31,6 +52,10 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
     }
 
     $rootScope.redirectToLeagueMenu = function () {
+        $ionicHistory.clearCache();
+        if ($ionicSideMenuDelegate.isOpen()) {
+            $ionicSideMenuDelegate.toggleRight();
+        }
         $state.go('Menu.Home');
     }
 }]);
@@ -115,6 +140,12 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
     $rootScope.toggleLeagueMenu = function () {
         $ionicSideMenuDelegate.toggleRight();
     };
+
+    $scope.$on('league:updated', function (event, response) {
+        //called by refresh
+        console.log(response);
+        $scope.Model.UserLeagues = response.data;
+    });
 }]);
 
 module.controller('HomeController', ['$scope', '$rootScope', 'LeagueService', '$ionicHistory', function ($scope, $rootScope, LeagueService, $ionicHistory) {
@@ -154,11 +185,18 @@ module.controller('LeagueHomeController', ['$scope', 'AccountService', '$rootSco
     $scope.refreshLeague = function(){
         LeagueService.GetGamesForLeague($stateParams.id).then(function (response) {
             $scope.Model.Games = response.data;
+     
             $scope.$broadcast('scroll.refreshComplete');
             //console.log(response);
         });
-    }
 
+        LeagueService.GetUserLeaguesForLeague($stateParams.id).then(function (response) {
+            console.log("broadcasting");
+            $rootScope.$broadcast('league:updated', response);
+        });
+    }
+    
+    $rootScope.$broadcast('league:updated',$stateParams.id);
     console.log($scope.Model);
 }]);
 
@@ -176,6 +214,7 @@ module.controller('CreateGameController', ['$scope', 'AccountService', '$rootSco
 
     LeagueService.GetUserLeaguesForLeague($stateParams.id).then(function (response) {
         $scope.Model.UserLeagues = response.data;
+        console.log($scope.Model);
     });
 
     $scope.SelectUser = function (user) {
@@ -194,44 +233,6 @@ module.controller('CreateGameController', ['$scope', 'AccountService', '$rootSco
         });
     }
 
-    $scope.numberPickerObject = {
-        inputValue: 0, //Optional
-        minValue: -9007199254740991,
-        maxValue: 9007199254740991,
-        format: "WHOLE",  //Optional - "WHOLE" or "DECIMAL"
-        unit: "",  //Optional - "m", "kg", "℃" or whatever you want
-        titleLabel: 'Set Score',  //Optional
-        setLabel: 'Set',  //Optional
-        closeLabel: 'Close',  //Optional
-        setButtonType: 'button-positive',  //Optional
-        closeButtonType: 'button-stable',  //Optional
-        callback: function (val) {    //Mandatory
-            if (val != 0) {
-                $scope.Game.userScore = val;
-            }
-            
-        }
-    };
-
-    $scope.opponentNumberPickerObject = {
-        inputValue: 0, //Optional
-        minValue: -9007199254740991,
-        maxValue: 9007199254740991,
-        format: "WHOLE",  //Optional - "WHOLE" or "DECIMAL"
-        unit: "",  //Optional - "m", "kg", "℃" or whatever you want
-        titleLabel: 'Set Score',  //Optional
-        setLabel: 'Set',  //Optional
-        closeLabel: 'Close',  //Optional
-        setButtonType: 'button-positive',  //Optional
-        closeButtonType: 'button-stable',  //Optional
-        callback: function (val) {    //Mandatory
-            if (val != 0) {
-                $scope.Game.opponentScore = val;
-            }
-        }
-    };
-
-    console.log($scope.Model);
 }]);
 
 module.controller('ProfileController', ['$scope', 'AccountService', '$rootScope', '$stateParams', 'LeagueService', '$window','$ionicLoading', function ($scope, AccountService, $rootScope, $stateParams, LeagueService, $window, $ionicLoading) {

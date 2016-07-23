@@ -14,6 +14,8 @@
         <AssociationConnector Association="MyLeaguesModel.FK_Game_User1" ManuallyRouted="false" />
         <AssociationConnector Association="MyLeaguesModel.FK_UserLeague_League" ManuallyRouted="false" />
         <AssociationConnector Association="MyLeaguesModel.FK_UserLeague_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MyLeaguesModel.SecurityToken" Width="1.5" PointX="3" PointY="8.875" />
+        <AssociationConnector Association="MyLeaguesModel.FK_SecurityToken_SecurityToken" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
