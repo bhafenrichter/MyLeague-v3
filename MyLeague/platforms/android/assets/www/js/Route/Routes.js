@@ -43,6 +43,16 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
         }
     })
 
+        .state('Menu.Requests', {
+            url: '/Requests',
+            views: {
+                'MenuContent': {
+                    templateUrl: 'View/Requests.html',
+                    controller: 'LeagueRequestsController'
+                }
+            }
+        })
+
     .state('LeagueMenu.Profile', {
         url: '/Profile/id/:id',
         views:{

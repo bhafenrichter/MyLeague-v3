@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('app', ['ionic', 'Routes', 'PopupModule', 'AccountModule', 'LeagueModule', 'HomeController', 'ui.router', 'ngRoute', 'ionic-numberpicker'])
+angular.module('app', ['ionic', 'Routes', 'PopupModule', 'AccountModule', 'LeagueModule', 'HomeController', 'ui.router', 'ngRoute', 'ngCordova'])
 .config(function($ionicConfigProvider) {
     // remove back button previous title text
     // use unicode em space characters to increase touch target area size of back button
@@ -11,14 +11,6 @@ angular.module('app', ['ionic', 'Routes', 'PopupModule', 'AccountModule', 'Leagu
 })
 .run(function($ionicPlatform) {
     $ionicPlatform.ready(function () {
-        //check to see if user has already logged in before
-        //document.addEventListener("deviceready", function () {
-        //    if (window.localStorage.getItem("User") != null) {
-        //        $rootScope.User = window.localStorage.getItem("User");
-        //        $rootScope.User.Leagues = {};
-        //        $state.go('Menu.Home');
-        //    }
-        //});
     if(cordova.platformId === 'ios' && window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)

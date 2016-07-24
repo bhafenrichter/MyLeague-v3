@@ -49,6 +49,13 @@ module.exports = [
         "clobbers": [
             "CameraPopoverHandle"
         ]
+    },
+    {
+        "file": "plugins/cordova-sqlite-storage/www/SQLitePlugin.js",
+        "id": "cordova-sqlite-storage.SQLitePlugin",
+        "clobbers": [
+            "SQLitePlugin"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -60,7 +67,8 @@ module.exports.metadata =
     "cordova-plugin-statusbar": "2.1.3",
     "ionic-plugin-keyboard": "1.0.9",
     "cordova-plugin-compat": "1.0.0",
-    "cordova-plugin-camera": "2.2.0"
+    "cordova-plugin-camera": "2.2.0",
+    "cordova-sqlite-storage": "1.4.6-pre5"
 };
 // BOTTOM OF METADATA
 });

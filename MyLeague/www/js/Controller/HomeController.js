@@ -1,13 +1,12 @@
 ﻿//define the module so that app.js can recognize it
 var module = angular.module('HomeController', []);
 
-module.controller('LoginController', ['$scope', 'PopupService', 'AccountService', '$state', '$rootScope', '$ionicLoading', '$ionicHistory', '$ionicSideMenuDelegate', function ($scope, PopupService, AccountService, $state, $rootScope, $ionicLoading, $ionicHistory, $ionicSideMenuDelegate) {
+module.controller('LoginController', ['$scope', 'PopupService', 'AccountService', '$state', '$rootScope', '$ionicLoading', '$ionicHistory', '$ionicSideMenuDelegate', '$window', function ($scope, PopupService, AccountService, $state, $rootScope, $ionicLoading, $ionicHistory, $ionicSideMenuDelegate, $window) {
     $scope.Username = "bhafenri@gmail.com";
     $scope.Password = "password";
 
-
-    if (window.localStorage.getItem("UserId") != null && window.localStorage.getItem("Token")) {
-        AccountService.ValidateSecurityToken(window.localStorage.getItem("UserId"), window.localStorage.getItem("Token")).then(function (response) {
+    if ($window.localStorage.getItem("UserId") != null && $window.localStorage.getItem("Token")) {
+        AccountService.ValidateSecurityToken($window.localStorage.getItem("UserId"), $window.localStorage.getItem("Token")).then(function (response) {
             console.log(response);
             $rootScope.User = response.data.User;
             $rootScope.User.Leagues = {};
@@ -37,12 +36,13 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
                 $rootScope.User.Leagues = {};
 
                 //set user security token
-                AccountService.GenerateSecurityToken(response.data.ID).then(function (response) {
-                    console.log(response.data);
-                    window.localStorage.setItem("UserId", response.data.UserID);
-                    window.localStorage.setItem("Token", response.data.SessionToken);
-                    $state.go('Menu.Home');
-                });
+                //AccountService.GenerateSecurityToken(response.data.ID).then(function (response) {
+                //    console.log(response.data);
+                //    $window.localStorage.setItem("UserId", response.data.UserID);
+                //    $window.localStorage.setItem("Token", response.data.SessionToken);
+                //    $state.go('Menu.Home');
+                //});
+                $state.go('Menu.Home');
 
             } else {
                 //user doesn't exist
