@@ -1,0 +1,23 @@
+﻿<ion-view title="Profile Settings">
+    <ion-content overflow-scroll="true" padding="true" class="has-header" style="background-color:#ECEFF1;">
+        <div class="profile">
+            <div id="profile_picture" style="bottom:{{DeviceHeight / 5}}px;">
+                <img ng-click="chooseProfilePicture()" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:{{DeviceWidth / 2}}px; height:{{DeviceHeight / 3}}px; margin:auto; display:block; border-radius:25px;" />
+
+                <div id="base_information" style="text-align:center; margin-top:10px;">
+                    <div class="list">
+                        <label class="item item-input">
+                            <span class="input-label">First Name</span>
+                            <input type="text" ng-model="User.FirstName">
+                        </label>
+                        <label class="item item-input">
+                            <span class="input-label">Last Name</span>
+                            <input type="text" ng-model="User.LastName">
+                        </label>
+                    </div>
+                    <button ng-click="saveUser()" class="button button-block button-positive">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

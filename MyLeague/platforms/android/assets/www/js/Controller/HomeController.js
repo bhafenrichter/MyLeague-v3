@@ -23,7 +23,11 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
             return false;
         }
     };
-    
+
+    $rootScope.isHomeMenu = function () {
+        return $state.includes('Menu.Home');
+    };
+
     $scope.Login = function (Username, Password) {
         //make it a promise
         $ionicLoading.show({ template: 'Logging In' });
@@ -36,12 +40,12 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
                 $rootScope.User.Leagues = {};
 
                 //set user security token
-                //AccountService.GenerateSecurityToken(response.data.ID).then(function (response) {
-                //    console.log(response.data);
-                //    $window.localStorage.setItem("UserId", response.data.UserID);
-                //    $window.localStorage.setItem("Token", response.data.SessionToken);
-                //    $state.go('Menu.Home');
-                //});
+                AccountService.GenerateSecurityToken(response.data.ID).then(function (response) {
+                    console.log(response.data);
+                    $window.localStorage.setItem("UserId", response.data.UserID);
+                    $window.localStorage.setItem("Token", response.data.SessionToken);
+                    $state.go('Menu.Home');
+                });
                 $state.go('Menu.Home');
 
             } else {
@@ -83,7 +87,7 @@ module.controller('MenuController', ['$scope', '$state', '$window', '$rootScope'
 
 }]);
 
-module.controller('RequestsController', ['$scope', '$state', '$window', '$rootScope', function ($scope, $state, $window, $rootScope) {
+module.controller('SettingsController', ['$scope', '$state', '$window', '$rootScope', '$cordovaImagePicker', "$cordovaFileTransfer", function ($scope, $state, $window, $rootScope, $cordovaImagePicker, $cordovaFileTransfer) {
     //check to see if user is logged in
     if ($rootScope.User == null) {
         $state.go('Login');
@@ -91,6 +95,29 @@ module.controller('RequestsController', ['$scope', '$state', '$window', '$rootSc
 
     $scope.DeviceHeight = $window.innerHeight;
     $scope.DeviceWidth = $window.innerWidth;
+
+    $scope.chooseProfilePicture = function () {
+        var options = {
+            maximumImagesCount: 1,
+            width: 800,
+            height: 800,
+            quality: 80
+        };
+
+        $cordovaImagePicker.getPictures(options).then(function (results) {
+            $cordovaFileTransfer.upload("http://myleague-data.azurewebsites.net/api/Upload", results[0], {}).then(function (results) {
+                console.log(results);
+            }, function (err) {
+                console.log(err);
+            }, function (progress) {
+                console.log(progress);
+            });
+
+        }, function (error) {
+            // error getting photos
+            console.log(error);
+        });
+    }
 
 }]);
 
@@ -116,6 +143,13 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
     LeagueService.GetUserLeaguesForLeague($stateParams.id).then(function (response) {
         $scope.Model.UserLeagues = response.data;
         $scope.Model.League = response.data[0].League;
+
+        for (var i = 0; i < response.data.length; i++) {
+            if (response.data[i].UserID == $rootScope.User.ID) {
+                $scope.Model.UserLeague = response.data[i];
+            }
+        }
+
         console.log($scope.Model);
     });
 
@@ -127,7 +161,7 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
 
     $scope.AddUserToLeague = function (userid, leagueid) {
         LeagueService.AddUserToLeague(userid, leagueid).then(function () {
-            PopupService.MessageDialog("User Invited to League.");
+            PopupService.MessageDialog("User added to League.");
             LeagueService.GetUserLeaguesForLeague($stateParams.id).then(function (response) {
                 $scope.Model.UserLeagues = response.data;
                 $scope.Model.League = response.data[0].League;
@@ -141,6 +175,12 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
         $ionicSideMenuDelegate.toggleRight();
     };
 
+    $scope.LeaveLeague = function (id) {
+        LeagueService.LeaveLeague(id).then(function () {
+            $state.go("Menu.Home");
+        });
+    }
+
     $scope.$on('league:updated', function (event, response) {
         //called by refresh
         console.log(response);
@@ -153,7 +193,7 @@ module.controller('HomeController', ['$scope', '$rootScope', 'LeagueService', '$
     $scope.Model.Leagues = LeagueService.GetLeaguesForUser($rootScope.User.ID).then(function (response) {
         $rootScope.User.Leagues = response.data;
     });
-    
+
     $scope.refreshLeagueFeed = function () {
         LeagueService.GetLeaguesForUser($rootScope.User.ID).then(function (response) {
             $rootScope.User.Leagues = response.data;
@@ -182,10 +222,10 @@ module.controller('LeagueHomeController', ['$scope', 'AccountService', '$rootSco
         //console.log(response);
     });
 
-    $scope.refreshLeague = function(){
+    $scope.refreshLeague = function () {
         LeagueService.GetGamesForLeague($stateParams.id).then(function (response) {
             $scope.Model.Games = response.data;
-     
+
             $scope.$broadcast('scroll.refreshComplete');
             //console.log(response);
         });
@@ -195,8 +235,8 @@ module.controller('LeagueHomeController', ['$scope', 'AccountService', '$rootSco
             $rootScope.$broadcast('league:updated', response);
         });
     }
-    
-    $rootScope.$broadcast('league:updated',$stateParams.id);
+
+    $rootScope.$broadcast('league:updated', $stateParams.id);
     console.log($scope.Model);
 }]);
 
@@ -235,7 +275,7 @@ module.controller('CreateGameController', ['$scope', 'AccountService', '$rootSco
 
 }]);
 
-module.controller('ProfileController', ['$scope', 'AccountService', '$rootScope', '$stateParams', 'LeagueService', '$window','$ionicLoading', function ($scope, AccountService, $rootScope, $stateParams, LeagueService, $window, $ionicLoading) {
+module.controller('ProfileController', ['$scope', 'AccountService', '$rootScope', '$stateParams', 'LeagueService', '$window', '$ionicLoading', function ($scope, AccountService, $rootScope, $stateParams, LeagueService, $window, $ionicLoading) {
     $scope.Model = {};
     $scope.Model._name = "Profile";
 

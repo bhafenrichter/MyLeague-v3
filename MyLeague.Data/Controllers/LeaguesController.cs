@@ -9,12 +9,20 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using MyLeague.Data;
+using System.Web;
+using System.Web.Mvc;
 
 namespace MyLeague.Data.Controllers
 {
     public class LeaguesController : ApiController
     {
         private MyLeaguesEntities db = new MyLeaguesEntities();
+
+        [System.Web.Mvc.Route("api/Upload")]
+        public HttpRequestMessage Upload()
+        {
+            return Request;
+        }
 
         // GET: api/Leagues
         public IQueryable<League> GetLeagues()
@@ -35,18 +43,18 @@ namespace MyLeague.Data.Controllers
             return Ok(league);
         }
 
-        [Route("api/GetLeaguesForUser")]
+        [System.Web.Http.Route("api/GetLeaguesForUser")]
         public IEnumerable<League> GetLeaguesForUser(int id)
         {
             var query = db.Leagues
                             .Join(db.UserLeagues, league => league.ID, userleague => userleague.LeagueID, (league,userleague) => new { League = league, UserLeague = userleague })
-                            .Where(x => x.UserLeague.UserID == id)
+                            .Where(x => x.UserLeague.UserID == id && x.UserLeague.IsDeleted == false)
                             .Select(x => x.League)
                             .ToList();
             return query;
         }
 
-        [Route("api/CreateLeague")]
+        [System.Web.Mvc.Route("api/CreateLeague")]
         public void CreateLeague(string name, string type, int userid)
         {
             League l = new League();
@@ -70,7 +78,7 @@ namespace MyLeague.Data.Controllers
             db.SaveChanges();
         }
 
-        [Route("api/GetGamesForLeague")]
+        [System.Web.Mvc.Route("api/GetGamesForLeague")]
         public IEnumerable<Game> GetGamesForLeague(int id)
         {
             var query = db.Games
@@ -78,15 +86,25 @@ namespace MyLeague.Data.Controllers
             return query;
         }
 
-        [Route("api/GetUserLeaguesForLeague")]
+        [System.Web.Mvc.Route("api/GetUserLeaguesForLeague")]
         public IEnumerable<UserLeague> GetUserLeaguesForLeague(int id)
         {
             var query = db.UserLeagues
-                .Where(x => x.LeagueID == id).ToList();
+                .Where(x => x.LeagueID == id && x.IsDeleted == false)
+                .ToList();
+
             return query;
         }
 
-        [Route("api/CreateGame")]
+        [System.Web.Mvc.Route("api/LeaveLeague")]
+        public void LeaveLeague(int userleagueid)
+        {
+            var userleague = db.UserLeagues.Where(x => x.ID == userleagueid).FirstOrDefault();
+            userleague.IsDeleted = true;
+            db.SaveChanges();
+        }
+
+        [System.Web.Mvc.Route("api/CreateGame")]
         public void CreateGame(int userid, int opponentid, int userscore, int opponentscore, int lat, int lng, int leagueid)
         {
             if(userid != opponentid)
@@ -126,20 +144,20 @@ namespace MyLeague.Data.Controllers
             }
         }
 
-        [Route("api/GetGamesPlayedCountForUser")]
+        [System.Web.Http.Route("api/GetGamesPlayedCountForUser")]
         public int GetGamesPlayedCountForUser(int id)
         {
             return db.Games.Where(x => x.UserID == id || x.OpponentID == id).Count();
         }
 
-        [Route("api/GetGamesForUserLeague")]
+        [System.Web.Http.Route("api/GetGamesForUserLeague")]
         public IEnumerable<Game> GetGamesForUserLeague(int id)
         {
             return db.Games.Where(x => x.UserID == id || x.OpponentID == id).ToList();
         }
 
-        [HttpGet]
-        [Route("api/SearchUsers")]
+        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.Route("api/SearchUsers")]
         public IEnumerable<User> SearchUsers(string searchtext)
         {
             return db.Users.Where(x => x.FirstName.Contains(searchtext)
@@ -149,7 +167,7 @@ namespace MyLeague.Data.Controllers
                 .ToList();
         }
 
-        [Route("api/AddUserToLeague")]
+        [System.Web.Mvc.Route("api/AddUserToLeague")]
         public void AddUserToLeague(int userid, int leagueid)
         {
             if(db.UserLeagues.Where(x => x.UserID == userid && x.LeagueID == leagueid).Count() == 0)
@@ -169,7 +187,7 @@ namespace MyLeague.Data.Controllers
             
         }
 
-        [Route("api/InviteUser")]
+        [System.Web.Mvc.Route("api/InviteUser")]
         public void InviteUser(int userid, int inviteeid, int leagueid, string message)
         {
             var request = db.LeagueRequests.Create();
@@ -183,7 +201,7 @@ namespace MyLeague.Data.Controllers
             db.SaveChanges();
         }
 
-        [Route("api/GetRequests")]
+        [System.Web.Mvc.Route("api/GetRequests")]
         public IEnumerable<LeagueRequest> GetRequests(int userid)
         {
             return db.LeagueRequests.Where(x => x.UserID == userid).ToList();

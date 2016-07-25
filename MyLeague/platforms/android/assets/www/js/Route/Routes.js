@@ -19,6 +19,12 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
         controller: 'CreateController'
     })
 
+    .state('Settings', {
+        url: '/Settings',
+        templateUrl: 'View/Settings.html',
+        controller: 'SettingsController'
+    })
+
     .state('Menu', {
         url: '/Menu',
         abstract: true,

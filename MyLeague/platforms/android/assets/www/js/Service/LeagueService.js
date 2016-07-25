@@ -20,6 +20,10 @@ module.service('LeagueService', ['$http', function ($http) {
         return $http.get(baseurl + "/api/GetUserLeaguesForLeague?id=" + id);
     }
 
+    service.LeaveLeague = function (id) {
+        return $http.post(baseurl + "/api/LeaveLeague?userleagueid=" + id);
+    }
+
     service.CreateGame = function (user, opponent, game) {
         console.log(user);
         console.log(opponent);
