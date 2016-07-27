@@ -105,6 +105,10 @@ module.controller('SettingsController', ['$scope', '$state', '$window', '$rootSc
         };
 
         $cordovaImagePicker.getPictures(options).then(function (results) {
+            var options = {};
+            options.mimeType = "multipart/form-data";
+            options.httpMethod = "POST";
+            options.headers = { Connection: "close" };
             $cordovaFileTransfer.upload("http://myleague-data.azurewebsites.net/api/Upload", results[0], {}).then(function (results) {
                 console.log(results);
             }, function (err) {
