@@ -9,6 +9,16 @@ angular.module('app', ['ionic', 'Routes', 'PopupModule', 'AccountModule', 'Leagu
     // use unicode em space characters to increase touch target area size of back button
     $ionicConfigProvider.backButton.previousTitleText(false).text('');
 })
+.directive('fallbackSrc', function () {
+  var fallbackSrc = {
+    link: function postLink(scope, iElement, iAttrs) {
+      iElement.bind('error', function() {
+        angular.element(this).attr("src", iAttrs.fallbackSrc);
+      });
+    }
+   }
+   return fallbackSrc;
+})
 .run(function($ionicPlatform) {
     $ionicPlatform.ready(function () {
     if(cordova.platformId === 'ios' && window.cordova && window.cordova.plugins.Keyboard) {

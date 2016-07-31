@@ -72,8 +72,9 @@ namespace MyLeague.Data.Controllers
         {
             token = token.Replace(" ", "+");
             //TODO: Add timeout for security token
-            var securityToken = db.SecurityTokens.Where(
-                x => x.UserID == id && x.SessionToken == token && x.isValid == true)
+            var securityToken = db.SecurityTokens
+                .Include("User.UserLeagues.League.Games.UserLeague")
+                .Where(x => x.UserID == id && x.SessionToken == token && x.isValid == true)
                 .FirstOrDefault();
             return securityToken;
         }

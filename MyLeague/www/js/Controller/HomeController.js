@@ -9,7 +9,6 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
         AccountService.ValidateSecurityToken($window.localStorage.getItem("UserId"), $window.localStorage.getItem("Token")).then(function (response) {
             console.log(response);
             $rootScope.User = response.data.User;
-            $rootScope.User.Leagues = {};
 
             $state.go('Menu.Home');
         });
@@ -37,7 +36,6 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
             if (response.data != null) {
                 //user exists, redirect to home page
                 $rootScope.User = response.data;
-                $rootScope.User.Leagues = {};
 
                 //set user security token
                 AccountService.GenerateSecurityToken(response.data.ID).then(function (response) {
@@ -92,7 +90,7 @@ module.controller('SettingsController', ['$scope', '$state', '$window', '$rootSc
     if ($rootScope.User == null) {
         $state.go('Login');
     }
-
+    console.log($rootScope.User.ID);
     $scope.DeviceHeight = $window.innerHeight;
     $scope.DeviceWidth = $window.innerWidth;
 
@@ -109,7 +107,7 @@ module.controller('SettingsController', ['$scope', '$state', '$window', '$rootSc
             options.mimeType = "multipart/form-data";
             options.httpMethod = "POST";
             options.headers = { Connection: "close" };
-            $cordovaFileTransfer.upload("http://myleague-data.azurewebsites.net/api/Upload", results[0], {}).then(function (results) {
+            $cordovaFileTransfer.upload("http://myleague-data.azurewebsites.net/api/Upload?id=" + $rootScope.User.ID, results[0], {}).then(function (results) {
                 console.log(results);
             }, function (err) {
                 console.log(err);
@@ -144,18 +142,27 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
     $scope.Model = {};
     $scope.Model._Name = "LeagueMenuController";
 
-    LeagueService.GetUserLeaguesForLeague($stateParams.id).then(function (response) {
-        $scope.Model.UserLeagues = response.data;
-        $scope.Model.League = response.data[0].League;
-
-        for (var i = 0; i < response.data.length; i++) {
-            if (response.data[i].UserID == $rootScope.User.ID) {
-                $scope.Model.UserLeague = response.data[i];
-            }
+    for (var i = 0; i < $rootScope.User.Leagues.length; i++) {
+        if ($rootScope.User.Leagues[i].ID == $stateParams.id) {
+            //pull the userleagues from the league iself
+            $scope.Model.League = $rootScope.User.Leagues[i];
         }
+    }
+    console.log($scope.Model);
 
-        console.log($scope.Model);
-    });
+
+    //LeagueService.GetUserLeaguesForLeague($stateParams.id).then(function (response) {
+    //    $scope.Model.UserLeagues = response.data;
+    //    $scope.Model.League = response.data[0].League;
+
+    //    for (var i = 0; i < response.data.length; i++) {
+    //        if (response.data[i].UserID == $rootScope.User.ID) {
+    //            $scope.Model.UserLeague = response.data[i];
+    //        }
+    //    }
+
+    //    console.log($scope.Model);
+    //});
 
     $scope.SearchUsers = function (search) {
         LeagueService.SearchUsers(search).then(function (response) {
@@ -194,17 +201,32 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
 
 module.controller('HomeController', ['$scope', '$rootScope', 'LeagueService', '$ionicHistory', function ($scope, $rootScope, LeagueService, $ionicHistory) {
     $scope.Model = {};
-    $scope.Model.Leagues = LeagueService.GetLeaguesForUser($rootScope.User.ID).then(function (response) {
-        $rootScope.User.Leagues = response.data;
-    });
 
+    console.log($rootScope.User);
+    if ($rootScope.User.Leagues == null) {
+        $scope.Model.Leagues = [];
+        for (var i = 0; i < $rootScope.User.UserLeagues.length; i++) {
+            if ($rootScope.User.UserLeagues[i].IsDeleted == false) {
+                //current account userleague is not in Leagues UserLeague array by default, must add it manually
+                $rootScope.User.UserLeagues[i].User = $rootScope.User;
+                $rootScope.User.UserLeagues[i].League.UserLeagues.push($rootScope.User.UserLeagues[i]);
+                $scope.Model.Leagues.push($rootScope.User.UserLeagues[i].League);
+
+            }
+        }
+        $rootScope.User.Leagues = $scope.Model.Leagues;
+        console.log($scope.Model.Leagues);
+    }
+
+    //accesses internet, default to local data
     $scope.refreshLeagueFeed = function () {
         LeagueService.GetLeaguesForUser($rootScope.User.ID).then(function (response) {
             $rootScope.User.Leagues = response.data;
             $scope.$broadcast('scroll.refreshComplete');
         });
-
     }
+
+    $rootScope.ProfilePictureUrlBase = "https://myleague.blob.core.windows.net/profile-picture/";
 }]);
 
 
@@ -215,6 +237,7 @@ module.controller('LeagueHomeController', ['$scope', 'AccountService', '$rootSco
     $scope.Model._Name = "LeagueHome";
 
     for (var i = 0; i < $rootScope.User.Leagues.length; i++) {
+        console.log($rootScope.User);
         if ($rootScope.User.Leagues[i].ID == $stateParams.id) {
             $scope.Model.League = $rootScope.User.Leagues[i];
             $scope.Model.UserLeague = $rootScope.User.UserLeagues[i];
@@ -223,7 +246,6 @@ module.controller('LeagueHomeController', ['$scope', 'AccountService', '$rootSco
 
     LeagueService.GetGamesForLeague($stateParams.id).then(function (response) {
         $scope.Model.Games = response.data;
-        //console.log(response);
     });
 
     $scope.refreshLeague = function () {
@@ -288,16 +310,18 @@ module.controller('ProfileController', ['$scope', 'AccountService', '$rootScope'
 
     $ionicLoading.show({ template: 'Loading User' });
 
-    LeagueService.GetUserLeagueForID($stateParams.id).then(function (response) {
-        console.log(response);
-        $scope.Model.UserLeague = response.data;
-        $scope.Model.User = response.data.User;
-        LeagueService.GetGamesPlayedCountForUser($stateParams.id).then(function (response) {
-            $scope.Model.UserLeague.GamesPlayed = response.data;
-            $ionicLoading.hide();
-            console.log($scope.Model);
-        });
-    });
+    for (var i = 0; i < $rootScope.User.Leagues.length; i++) {
+        for (var j = 0; j < $rootScope.User.Leagues[i].UserLeagues.length; j++) {
+            if ($rootScope.User.Leagues[i].UserLeagues[j].ID == $stateParams.id) {
+                
+                $scope.Model.UserLeague = $rootScope.User.Leagues[i].UserLeagues[j];
+                $scope.Model.User = $rootScope.User.Leagues[i].UserLeagues[j].User;
+                $scope.Model.UserLeague.GamesPlayed = $scope.Model.UserLeague.Games.length + $scope.Model.UserLeague.Games1.length;
+                $ionicLoading.hide();
+                console.log($scope.Model.UserLeague);
+            }
+        }
+    }
 }]);
 
 module.controller('ScheduleController', ['$scope', 'AccountService', '$rootScope', '$stateParams', 'LeagueService', function ($scope, AccountService, $rootScope, $stateParams, LeagueService) {

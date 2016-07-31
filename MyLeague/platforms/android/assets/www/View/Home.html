@@ -3,7 +3,7 @@
         <ion-refresher pulling-text="Pull to refresh..."
                        on-refresh="refreshLeagueFeed()">
         </ion-refresher>
-        <div ng-repeat="league in User.Leagues">
+        <div ng-repeat="league in Model.Leagues">
             <a href="#/LeagueMenu/id/{{league.ID}}/LeagueHome/id/{{league.ID}}" style="text-decoration:none;">
                 <div class="card">
                     <div class="item item-text-wrap">

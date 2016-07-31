@@ -18,6 +18,7 @@ namespace MyLeague.Data
         public League()
         {
             this.UserLeagues = new HashSet<UserLeague>();
+            this.Games = new HashSet<Game>();
         }
     
         public int ID { get; set; }
@@ -29,5 +30,7 @@ namespace MyLeague.Data
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserLeague> UserLeagues { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Game> Games { get; set; }
     }
 }

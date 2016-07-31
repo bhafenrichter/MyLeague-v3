@@ -26,5 +26,6 @@ namespace MyLeague.Data
     
         public virtual UserLeague UserLeague { get; set; }
         public virtual UserLeague UserLeague1 { get; set; }
+        public virtual League League { get; set; }
     }
 }

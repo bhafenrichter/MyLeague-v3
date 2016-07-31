@@ -10,6 +10,9 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using MyLeague.Data;
 using System.Web;
+using Microsoft.Azure; // Namespace for CloudConfigurationManager
+using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
+using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types
 
 namespace MyLeague.Data.Controllers
 {
@@ -37,10 +40,28 @@ namespace MyLeague.Data.Controllers
         }
 
         [System.Web.Http.Route("api/Upload")]
-        public HttpPostedFile Upload()
+        public string Upload(int id)
         {
             var httpPostedFile = HttpContext.Current.Request.Files["file"];
-            return httpPostedFile;
+
+            //get a reference to the storage account
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                CloudConfigurationManager.GetSetting("StorageConnectionString"));
+
+            //create blob client 
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+            // Retrieve a reference to a container.
+            CloudBlobContainer container = blobClient.GetContainerReference("profile-picture");
+
+            // Create the container if it doesn't already exist.
+            container.CreateIfNotExists();
+
+            // Create or overwrite the "myblob" blob with contents from a local file.
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(id.ToString() + ".png");
+            blockBlob.UploadFromStream(httpPostedFile.InputStream);
+
+            return httpPostedFile.ContentType;
         }
 
         [System.Web.Http.Route("api/GetLeaguesForUser")]
@@ -81,15 +102,23 @@ namespace MyLeague.Data.Controllers
         [System.Web.Http.Route("api/GetGamesForLeague")]
         public IEnumerable<Game> GetGamesForLeague(int id)
         {
+            db.Configuration.LazyLoadingEnabled = false;
             var query = db.Games
-                .Where(x => x.LeagueID == id).OrderByDescending(x => x.CreatedOn).ToList();
+                .Include("UserLeague")
+                .Include("UserLeague.User")
+                .Include("UserLeague1")
+                .Include("UserLeague1.User")
+                .Where(x => x.LeagueID == id)
+                .OrderByDescending(x => x.CreatedOn).ToList();
             return query;
         }
 
         [System.Web.Http.Route("api/GetUserLeaguesForLeague")]
         public IEnumerable<UserLeague> GetUserLeaguesForLeague(int id)
         {
+            db.Configuration.LazyLoadingEnabled = false;
             var query = db.UserLeagues
+                .Include("User")
                 .Where(x => x.LeagueID == id && x.IsDeleted == false)
                 .ToList();
 

@@ -15,26 +15,26 @@
                             <div class="col-80">
                                 <div class="row">
                                     <div class="col-80">
-                                        <img class="game-entry-picture" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" />
+                                        <img class="game-entry-picture" ng-src="{{ProfilePictureUrlBase}}{{game.UserLeague.User.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" />
                                         <p class="game-entry-name" style="font-weight:bold;" ng-if="game.UserScore > game.OpponentScore">{{game.UserLeague.User.FirstName.substring(0,1)}}. {{game.UserLeague.User.LastName}}</p>
-                                        <p class="game-entry-name" ng-if="game.UserScore < game.OpponentScore">{{game.UserLeague.User.FirstName.substring(0,1)}}. {{game.UserLeague.User.LastName}}</p>
+                                        <p class="game-entry-name" ng-if="game.UserScore <= game.OpponentScore">{{game.UserLeague.User.FirstName.substring(0,1)}}. {{game.UserLeague.User.LastName}}</p>
                                     </div>
                                     <div class="col-20" style="margin-top:5px;">
                                         <p style="font-weight:bold;" ng-if="game.UserScore > game.OpponentScore">{{game.UserScore}}</p>
-                                        <p ng-if="game.UserScore < game.OpponentScore">{{game.UserScore}}</p>
+                                        <p ng-if="game.UserScore <= game.OpponentScore">{{game.UserScore}}</p>
                                         
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-80">
-                                        <img class="game-entry-picture" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" />
+                                        <img class="game-entry-picture" ng-src="{{ProfilePictureUrlBase}}{{game.UserLeague1.User.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" />
                                         <p class="game-entry-name" style="font-weight:bold;" ng-if="game.OpponentScore > game.UserScore">{{game.UserLeague1.User.FirstName.substring(0,1)}}. {{game.UserLeague1.User.LastName}}</p>
-                                        <p class="game-entry-name" ng-if="game.OpponentScore < game.UserScore">{{game.UserLeague1.User.FirstName.substring(0,1)}}. {{game.UserLeague1.User.LastName}}</p>
+                                        <p class="game-entry-name" ng-if="game.OpponentScore <= game.UserScore">{{game.UserLeague1.User.FirstName.substring(0,1)}}. {{game.UserLeague1.User.LastName}}</p>
                                         
                                     </div>
                                     <div class="col-20" style="margin-top:5px;">
                                         <p style="font-weight:bold;" ng-if="game.UserScore < game.OpponentScore">{{game.OpponentScore}}</p>
-                                        <p ng-if="game.UserScore > game.OpponentScore">{{game.OpponentScore}}</p>
+                                        <p ng-if="game.UserScore >= game.OpponentScore">{{game.OpponentScore}}</p>
                                         
                                     </div>
                                 </div>

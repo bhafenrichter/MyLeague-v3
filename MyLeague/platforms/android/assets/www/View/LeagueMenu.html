@@ -15,7 +15,7 @@
                 <h4 style="text-align:center;">Current Standings</h4>
             </div>
             <ion-list>
-                <div ng-repeat="userleague in Model.UserLeagues">
+                <div ng-repeat="userleague in Model.League.UserLeagues">
                     <ion-item menu-toggle="right" href="#/LeagueMenu/id/{{Model.League.ID}}/Profile/id/{{userleague.ID}}">
                         <h2>{{$index + 1}}. {{userleague.User.FirstName.substring(0,1)}}. {{userleague.User.LastName}}<span style="float:right; font-weight:bold;">{{userleague.Wins}}-{{userleague.Losses}}</span></h2>
                     </ion-item>
@@ -54,7 +54,7 @@
                     <table ng-click="AddUserToLeague(User.ID, Model.League.ID)">
                         <tr>
                             <td rowspan="2">
-                                <img src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:50px; height:50px;margin: 0 auto; display:block;" />
+                                <img ng-src="{{ProfilePictureUrl}}" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:50px; height:50px;margin: 0 auto; display:block;" />
                             </td>
                             <td style="position:relative; bottom:25px; left:15px;">
                                 <h2>{{User.FirstName}} {{User.LastName}}</h2>

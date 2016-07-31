@@ -79,6 +79,18 @@
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="Ties" Type="int" />
         </EntityType>
+        <Association Name="FK_Game_League">
+          <End Role="League" Type="Self.League" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="League">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="LeagueID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Game_User">
           <End Role="UserLeague" Type="Self.UserLeague" Multiplicity="1" />
           <End Role="Game" Type="Self.Game" Multiplicity="*" />
@@ -146,6 +158,10 @@
           <EntitySet Name="SecurityToken" EntityType="Self.SecurityToken" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLeague" EntityType="Self.UserLeague" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Game_League" Association="Self.FK_Game_League">
+            <End Role="League" EntitySet="League" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
           <AssociationSet Name="FK_Game_User" Association="Self.FK_Game_User">
             <End Role="UserLeague" EntitySet="UserLeague" />
             <End Role="Game" EntitySet="Game" />
@@ -186,6 +202,7 @@
           <NavigationProperty Name="UserLeague1" Relationship="Self.FK_Game_User1" FromRole="Game" ToRole="UserLeague" />
           <Property Name="LeagueID" Type="Int32" Nullable="false" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="League" Relationship="MyLeaguesModel.FK_Game_League" FromRole="Game" ToRole="League" />
         </EntityType>
         <EntityType Name="League">
           <Key>
@@ -198,6 +215,7 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="UserLeagues" Relationship="Self.FK_UserLeague_League" FromRole="League" ToRole="UserLeague" />
           <Property Name="PictureUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Games" Relationship="MyLeaguesModel.FK_Game_League" FromRole="League" ToRole="Game" />
         </EntityType>
         <EntityType Name="LeagueRequest">
           <Key>
@@ -319,6 +337,10 @@
             <End Role="User" EntitySet="Users" />
             <End Role="SecurityToken" EntitySet="SecurityTokens" />
           </AssociationSet>
+          <AssociationSet Name="FK_Game_League" Association="MyLeaguesModel.FK_Game_League">
+            <End Role="League" EntitySet="Leagues" />
+            <End Role="Game" EntitySet="Games" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="SecurityToken">
           <Key>
@@ -340,6 +362,18 @@
             </Principal>
             <Dependent Role="SecurityToken">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Game_League">
+          <End Type="MyLeaguesModel.League" Role="League" Multiplicity="1" />
+          <End Type="MyLeaguesModel.Game" Role="Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="League">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="LeagueID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

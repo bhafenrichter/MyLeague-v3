@@ -15,7 +15,7 @@
 
         </div>
         <div id="profile_picture" style="bottom:{{DeviceHeight / 10}}px;">
-            <img src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:{{DeviceWidth / 4}}px; height:{{DeviceHeight / 6}}px; margin:auto; display:block; border-radius:25px;" />
+            <img ng-src="{{ProfilePictureUrlBase}}{{Model.User.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:{{DeviceWidth / 4}}px; height:{{DeviceHeight / 6}}px; margin:auto; display:block; border-radius:25px;" />
 
             <div id="base_information" style="text-align:center; margin-top:10px;">
                 <h3>{{Model.User.FirstName}} {{Model.User.LastName}}</h3>
