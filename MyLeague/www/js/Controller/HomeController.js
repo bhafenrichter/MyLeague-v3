@@ -5,14 +5,8 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
     $scope.Username = "bhafenri@gmail.com";
     $scope.Password = "password";
 
-    if ($window.localStorage.getItem("UserId") != null && $window.localStorage.getItem("Token")) {
-        AccountService.ValidateSecurityToken($window.localStorage.getItem("UserId"), $window.localStorage.getItem("Token")).then(function (response) {
-            console.log(response);
-            $rootScope.User = response.data.User;
-
-            $state.go('Menu.Home');
-        });
-
+    if ($window.localStorage.getItem("UserId") != null && $window.localStorage.getItem("Token") != null) {
+        $state.go('Menu.Home');
     }
 
     $rootScope.isLoggedIn = function () {
@@ -34,18 +28,13 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
             console.log(response);
             $ionicLoading.hide();
             if (response.data != null) {
-                //user exists, redirect to home page
-                $rootScope.User = response.data;
-
                 //set user security token
                 AccountService.GenerateSecurityToken(response.data.ID).then(function (response) {
-                    console.log(response.data);
+                    console.log("Created Token");
                     $window.localStorage.setItem("UserId", response.data.UserID);
                     $window.localStorage.setItem("Token", response.data.SessionToken);
                     $state.go('Menu.Home');
                 });
-                $state.go('Menu.Home');
-
             } else {
                 //user doesn't exist
                 PopupService.MessageDialog("Your credentials were incorrect. Please try again.");
@@ -130,6 +119,7 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
     if ($rootScope.User == null) {
         $state.go('Login');
     }
+
     $scope.Logout = function () {
         $state.go('Login');
     }
@@ -149,20 +139,6 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
         }
     }
     console.log($scope.Model);
-
-
-    //LeagueService.GetUserLeaguesForLeague($stateParams.id).then(function (response) {
-    //    $scope.Model.UserLeagues = response.data;
-    //    $scope.Model.League = response.data[0].League;
-
-    //    for (var i = 0; i < response.data.length; i++) {
-    //        if (response.data[i].UserID == $rootScope.User.ID) {
-    //            $scope.Model.UserLeague = response.data[i];
-    //        }
-    //    }
-
-    //    console.log($scope.Model);
-    //});
 
     $scope.SearchUsers = function (search) {
         LeagueService.SearchUsers(search).then(function (response) {
@@ -194,16 +170,63 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
 
     $scope.$on('league:updated', function (event, response) {
         //called by refresh
-        console.log(response);
-        $scope.Model.UserLeagues = response.data;
+        
+
+        //set the leagues userleague data
+        for (var i = 0; i < $rootScope.User.Leagues.length; i++) {
+            if ($rootScope.User.Leagues[i].ID == $stateParams.id) {
+                $rootScope.User.Leagues[i].UserLeagues.UserLeagues = response;
+            }
+        }
+        console.log($rootScope.User);
+        $scope.Model.League.UserLeagues = response.data;
     });
 }]);
 
-module.controller('HomeController', ['$scope', '$rootScope', 'LeagueService', '$ionicHistory', function ($scope, $rootScope, LeagueService, $ionicHistory) {
+module.controller('HomeController', ['$scope', '$rootScope', 'LeagueService', 'AccountService', '$ionicHistory', '$window', '$ionicLoading', '$state', function ($scope, $rootScope, LeagueService, AccountService, $ionicHistory, $window, $ionicLoading, $state) {
     $scope.Model = {};
 
-    console.log($rootScope.User);
-    if ($rootScope.User.Leagues == null) {
+    if ($rootScope.User == null) {
+        if ($window.localStorage.getItem("UserId") != null && $window.localStorage.getItem("Token") != null) {
+            $ionicLoading.show({ template: 'Loading...' });
+            //user has already logged in, use their security token to get their information
+
+            AccountService.ValidateSecurityToken($window.localStorage.getItem("UserId"), $window.localStorage.getItem("Token")).then(function (response) {
+                console.log(response);
+                if (response.data != null) {
+                    $rootScope.User = response.data.User;
+
+                    //initialize homecontroller data
+                    $scope.Model.Leagues = [];
+                    for (var i = 0; i < $rootScope.User.UserLeagues.length; i++) {
+                        if ($rootScope.User.UserLeagues[i].IsDeleted == false) {
+                            //current account userleague is not in Leagues UserLeague array by default, must add it manually
+                            $rootScope.User.UserLeagues[i].User = $rootScope.User;
+                            $rootScope.User.UserLeagues[i].League.UserLeagues.push($rootScope.User.UserLeagues[i]);
+                            $scope.Model.Leagues.push($rootScope.User.UserLeagues[i].League);
+
+                        }
+                    }
+                    $rootScope.User.Leagues = $scope.Model.Leagues;
+                    console.log($scope.Model.Leagues);
+                    $ionicLoading.hide();
+                } else {
+                    //userid and token don't match up, clear cache and log in with new token
+                    $window.localStorage.clear();
+                    $ionicLoading.hide();
+                    $state.go("Login");
+                }
+            });
+        } else {
+            //the token isn't validated, therefore go back to the login screen
+            $window.localStorage.clear();
+            $ionicLoading.hide();
+            $state.go("Login");
+        }
+        
+    } else {
+        //user logged in for the first time, $rootScope.User has already been filled
+        //initialize homecontroller data
         $scope.Model.Leagues = [];
         for (var i = 0; i < $rootScope.User.UserLeagues.length; i++) {
             if ($rootScope.User.UserLeagues[i].IsDeleted == false) {
@@ -216,6 +239,7 @@ module.controller('HomeController', ['$scope', '$rootScope', 'LeagueService', '$
         }
         $rootScope.User.Leagues = $scope.Model.Leagues;
         console.log($scope.Model.Leagues);
+        $ionicLoading.hide();
     }
 
     //accesses internet, default to local data
@@ -244,14 +268,21 @@ module.controller('LeagueHomeController', ['$scope', 'AccountService', '$rootSco
         }
     }
 
+    //load the games from  server because it takes load off of initial hit
     LeagueService.GetGamesForLeague($stateParams.id).then(function (response) {
         $scope.Model.Games = response.data;
+        $scope.$broadcast('scroll.refreshComplete');
+        //console.log(response);
+    });
+
+    LeagueService.GetUserLeaguesForLeague($stateParams.id).then(function (response) {
+        console.log("broadcasting");
+        $rootScope.$broadcast('league:updated', response);
     });
 
     $scope.refreshLeague = function () {
         LeagueService.GetGamesForLeague($stateParams.id).then(function (response) {
             $scope.Model.Games = response.data;
-
             $scope.$broadcast('scroll.refreshComplete');
             //console.log(response);
         });
@@ -261,14 +292,14 @@ module.controller('LeagueHomeController', ['$scope', 'AccountService', '$rootSco
             $rootScope.$broadcast('league:updated', response);
         });
     }
-
-    $rootScope.$broadcast('league:updated', $stateParams.id);
     console.log($scope.Model);
 }]);
 
 module.controller('CreateGameController', ['$scope', 'AccountService', '$rootScope', '$stateParams', '$ionicModal', 'LeagueService', 'PopupService', '$state', function ($scope, AccountService, $rootScope, $stateParams, $ionicModal, LeagueService, PopupService, $state) {
     $scope.Model = {};
     $scope.Game = {};
+    $scope.OpponentUrl = "https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg";
+
     $scope.Model._Name = "CreateGame";
     for (var i = 0; i < $rootScope.User.UserLeagues.length; i++) {
         if ($rootScope.User.UserLeagues[i].LeagueID == $stateParams.id) {
@@ -286,6 +317,7 @@ module.controller('CreateGameController', ['$scope', 'AccountService', '$rootSco
     $scope.SelectUser = function (user) {
         if (user.UserID != $scope.Model.User.UserID) {
             $scope.Model.Opponent = user;
+            $scope.OpponentUrl = $rootScope.ProfilePictureUrlBase + $scope.Model.Opponent.ID + ".png";
             $scope.closeModal();
         } else {
             PopupService.MessageDialog("You cannot select yourself.");
@@ -310,10 +342,13 @@ module.controller('ProfileController', ['$scope', 'AccountService', '$rootScope'
 
     $ionicLoading.show({ template: 'Loading User' });
 
+    //index used for looking up userleagues
+    var leagueIndex = 0; 
     for (var i = 0; i < $rootScope.User.Leagues.length; i++) {
         for (var j = 0; j < $rootScope.User.Leagues[i].UserLeagues.length; j++) {
             if ($rootScope.User.Leagues[i].UserLeagues[j].ID == $stateParams.id) {
-                
+                console.log($rootScope.User.Leagues[i].UserLeagues[j]);
+                leagueIndex = i;
                 $scope.Model.UserLeague = $rootScope.User.Leagues[i].UserLeagues[j];
                 $scope.Model.User = $rootScope.User.Leagues[i].UserLeagues[j].User;
                 $scope.Model.UserLeague.GamesPlayed = $scope.Model.UserLeague.Games.length + $scope.Model.UserLeague.Games1.length;
@@ -322,6 +357,15 @@ module.controller('ProfileController', ['$scope', 'AccountService', '$rootScope'
             }
         }
     }
+
+    $scope.GetUserLeague = function (id) {
+        for (var i = 0; i < $rootScope.User.Leagues[leagueIndex].UserLeagues.length; i++) {
+            if ($rootScope.User.Leagues[leagueIndex].UserLeagues[i].ID == id) {
+                return $rootScope.User.Leagues[leagueIndex].UserLeagues[i];
+            }
+        }
+    }
+    
 }]);
 
 module.controller('ScheduleController', ['$scope', 'AccountService', '$rootScope', '$stateParams', 'LeagueService', function ($scope, AccountService, $rootScope, $stateParams, LeagueService) {

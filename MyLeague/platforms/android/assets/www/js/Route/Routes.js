@@ -10,7 +10,8 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
     .state('Login', {
         url: '/Login',
         templateUrl: 'View/Login.html',
-        controller: 'LoginController'
+        controller: 'LoginController',
+        cache:false
     })
 
     .state('Create', {

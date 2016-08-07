@@ -22,7 +22,6 @@ namespace MyLeague.Data.Services
                 db.Configuration.LazyLoadingEnabled = false;
                 string hash = sha256_hash(password + salt);
                 User user = db.Users
-                    .Include("UserLeagues")
                     .Where(x => x.Email == email && x.Password == hash)
                     .FirstOrDefault();
                 return user;

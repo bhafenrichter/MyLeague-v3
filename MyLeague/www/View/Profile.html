@@ -50,6 +50,9 @@
                         <div ng-if="game.UserLeague1">
                             <p>{{game.UserLeague1.User.FirstName.substring(0,1)}}. {{game.UserLeague1.User.LastName}}</p>
                         </div>
+                        <div ng-if="!game.UserLeague && !game.UserLeague1">
+                            <p>{{User.FirstName.substring(0,1)}}. {{User.LastName}}</p>
+                        </div>
                     </div>
                     <div class="col-25">
                         <p>{{game.UserScore}}</p>

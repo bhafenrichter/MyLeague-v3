@@ -3,7 +3,7 @@
         <div id="score" style="position:absolute;left:0px; top:0px; width:100%; height:100%;">
             <div class="row" style="margin-bottom:15px;">
                 <div class="col-50">
-                    <img ng-src="{{ProfilePictureUrlBase}}{{User.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:100%; height:100%;margin: 0 auto; display:block; margin-bottom:15px;" />
+                    <img ng-src="{{ProfilePictureUrlBase}}{{User.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:100%; height:200px;margin: 0 auto; display:block; margin-bottom:15px;" />
                     <h4 style="text-align:center; margin-bottom:0px;">{{User.FirstName.substring(0,1)}}. {{User.LastName}}</h4>
                     <p style="text-align:center;">{{Model.User.Wins}}-{{Model.User.Losses}}</p>
 
@@ -11,7 +11,7 @@
 
                 </div>
                 <div class="col-50">
-                    <img ng-click="openModal()" ng-src="{{ProfilePictureUrlBase}}{{Model.Opponent.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:100%; height:100%;margin: 0 auto; display:block; margin-bottom:15px;" />
+                    <img ng-click="openModal()" ng-src="{{OpponentUrl}}" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:200px; height:200px;margin: 0 auto; display:block; margin-bottom:15px;" />
                     <h4 style="text-align:center; margin-bottom:0px;" ng-if="Model.Opponent">{{Model.Opponent.User.FirstName.substring(0,1)}}. {{Model.Opponent.User.LastName}}&nbsp;</h4>
                     <h4 style="text-align:center; margin-bottom:0px;" ng-if="!Model.Opponent">&nbsp;</h4>
                     <p style="text-align:center;">{{Model.Opponent.Wins}}-{{Model.Opponent.Losses}}</p>
@@ -37,7 +37,7 @@
                         <table>
                             <tr>
                                 <td rowspan="2">
-                                    <img ng-src="{{ProfilePictureUrl}}" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:50px; height:50px;margin: 0 auto; display:block;" />
+                                    <img ng-src="{{ProfilePictureUrlBase}}{{userleague.User.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:50px; height:50px;margin: 0 auto; display:block;" />
                                 </td>
                                 <td style="position:relative; bottom:25px; left:15px;">
                                     <h2>{{userleague.User.FirstName}} {{userleague.User.LastName}}</h2>

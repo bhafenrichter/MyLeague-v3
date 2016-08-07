@@ -65,12 +65,18 @@ namespace MyLeague.Data.Controllers
         }
 
         [System.Web.Http.Route("api/GetLeaguesForUser")]
-        public IEnumerable<League> GetLeaguesForUser(int id)
+        public List<League> GetLeaguesForUser(int id)
         {
+            db.Configuration.LazyLoadingEnabled = false;
             var query = db.Leagues
                             .Join(db.UserLeagues, league => league.ID, userleague => userleague.LeagueID, (league,userleague) => new { League = league, UserLeague = userleague })
                             .Where(x => x.UserLeague.UserID == id && x.UserLeague.IsDeleted == false)
                             .Select(x => x.League)
+                            .Include("UserLeagues")
+                            .Include("UserLeagues.User")
+                            .Include("UserLeagues.User")
+                            .Include("UserLeagues.Games")
+                            .Include("UserLeagues.Games1")
                             .ToList();
             return query;
         }
@@ -106,8 +112,12 @@ namespace MyLeague.Data.Controllers
             var query = db.Games
                 .Include("UserLeague")
                 .Include("UserLeague.User")
+                .Include("UserLeague.Games")
+                .Include("UserLeague.Games1")
                 .Include("UserLeague1")
                 .Include("UserLeague1.User")
+                .Include("UserLeague1.Games")
+                .Include("UserLeague1.Games1")
                 .Where(x => x.LeagueID == id)
                 .OrderByDescending(x => x.CreatedOn).ToList();
             return query;
@@ -119,6 +129,8 @@ namespace MyLeague.Data.Controllers
             db.Configuration.LazyLoadingEnabled = false;
             var query = db.UserLeagues
                 .Include("User")
+                .Include("Games")
+                .Include("Games1")
                 .Where(x => x.LeagueID == id && x.IsDeleted == false)
                 .ToList();
 

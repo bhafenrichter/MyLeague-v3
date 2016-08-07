@@ -62,6 +62,7 @@ namespace MyLeague.Data.Controllers
             token.CreatedOn = DateTime.Now;
             token.SessionToken = SecurityService.GenerateSecurityToken();
             token.isValid = true;
+            db.Configuration.LazyLoadingEnabled = false;
             db.SecurityTokens.Add(token);
             db.SaveChanges();
             return token;
@@ -72,8 +73,10 @@ namespace MyLeague.Data.Controllers
         {
             token = token.Replace(" ", "+");
             //TODO: Add timeout for security token
+            db.Configuration.LazyLoadingEnabled = false;
             var securityToken = db.SecurityTokens
                 .Include("User.UserLeagues.League.Games.UserLeague")
+                .Include("User.UserLeagues.League.Games.UserLeague1")
                 .Where(x => x.UserID == id && x.SessionToken == token && x.isValid == true)
                 .FirstOrDefault();
             return securityToken;
