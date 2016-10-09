@@ -43,6 +43,30 @@
                         {
                             "xml": "<feature name=\"FileTransfer\"><param name=\"android-package\" value=\"org.apache.cordova.filetransfer.FileTransfer\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"FacebookConnectPlugin\"><param name=\"android-package\" value=\"org.apache.cordova.facebook.ConnectPlugin\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://m.facebook.com\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://graph.facebook.com\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://api.facebook.com\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://*.fbcdn.net\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://*.akamaihd.net\" />",
+                            "count": 1
                         }
                     ]
                 }
@@ -64,6 +88,30 @@
                     "/manifest": [
                         {
                             "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
+                            "count": 1
+                        }
+                    ],
+                    "application": [
+                        {
+                            "xml": "<meta-data android:name=\"com.facebook.sdk.ApplicationId\" android:value=\"@string/fb_app_id\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<activity android:label=\"@string/fb_app_name\" android:name=\"com.facebook.LoginActivity\" android:theme=\"@android:style/Theme.Translucent.NoTitleBar\" />",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "res/values/facebookconnect.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<string name=\"fb_app_id\">649059798596689</string>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<string name=\"fb_app_name\">MyLeague</string>",
                             "count": 1
                         }
                     ]
@@ -103,6 +151,11 @@
             "PACKAGE_NAME": "com.ionicframework.ionicblankapp"
         },
         "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "com.ionicframework.ionicblankapp"
+        },
+        "phonegap-facebook-plugin": {
+            "APP_ID": "649059798596689",
+            "APP_NAME": "MyLeague",
             "PACKAGE_NAME": "com.ionicframework.ionicblankapp"
         }
     },
@@ -336,6 +389,13 @@
             "clobbers": [
                 "window.FileTransfer"
             ]
+        },
+        {
+            "file": "plugins/phonegap-facebook-plugin/facebookConnectPlugin.js",
+            "id": "phonegap-facebook-plugin.FacebookConnectPlugin",
+            "clobbers": [
+                "facebookConnectPlugin"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -349,6 +409,7 @@
         "cordova-sqlite-storage": "1.4.6-pre5",
         "cordova-plugin-image-picker": "1.1.1",
         "cordova-plugin-file": "4.2.0",
-        "cordova-plugin-file-transfer": "1.5.1"
+        "cordova-plugin-file-transfer": "1.5.1",
+        "phonegap-facebook-plugin": "0.12.0"
     }
 }

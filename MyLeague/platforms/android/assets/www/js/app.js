@@ -8,6 +8,7 @@ angular.module('app', ['ionic', 'Routes', 'PopupModule', 'AccountModule', 'Leagu
     // remove back button previous title text
     // use unicode em space characters to increase touch target area size of back button
     $ionicConfigProvider.backButton.previousTitleText(false).text('');
+
 })
 .directive('fallbackSrc', function () {
   var fallbackSrc = {
@@ -20,6 +21,9 @@ angular.module('app', ['ionic', 'Routes', 'PopupModule', 'AccountModule', 'Leagu
    return fallbackSrc;
 })
 .run(function($ionicPlatform) {
+    if (window.StatusBar) {
+        StatusBar.style(1);
+    }
     $ionicPlatform.ready(function () {
     if(cordova.platformId === 'ios' && window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard

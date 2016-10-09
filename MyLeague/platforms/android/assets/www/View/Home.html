@@ -1,24 +1,23 @@
 ﻿<ion-view title="MyLeagues">
-    <ion-content overflow-scroll="true" padding="true" class="has-header" style="background-color:#ECEFF1;">
+    <ion-content overflow-scroll="true" padding="false" class="has-header" style="background-color:white;">
         <ion-refresher pulling-text="Pull to refresh..."
                        on-refresh="refreshLeagueFeed()">
         </ion-refresher>
-        <div ng-repeat="league in Model.Leagues">
-            <a href="#/LeagueMenu/id/{{league.ID}}/LeagueHome/id/{{league.ID}}" style="text-decoration:none;">
-                <div class="card">
-                    <div class="item item-text-wrap">
-                        <div class="row">
-                            <div class="item item-thumbnail-left">
-                                <img src="http://housing.greenlines-institute.org/sites/_conference_tourism/public/imagens/2016/programme/Plenary%20sessions.png" />
+        <div class="list">
+            <div ng-repeat="league in Model.Leagues">
+                    <a href="#/LeagueMenu/id/{{league.ID}}/LeagueHome/id/{{league.ID}}" style="text-decoration:none;">
+                        <div class="row" style="padding:0px;">
+                            <div class="item item-thumbnail-left" style="display:block; width:100%;">
+                                <img src="https://myleague.blob.core.windows.net/league-avatar/{{league.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" />
                                 <h2>{{league.LeagueName}}</h2>
                                 <p>{{league.LeagueType}}</p>
-                                <i>{{league.UserLeagues.length}} Members</i>
+                                <i>{{league.MemberCount}} Members</i>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </a>
+                    </a>
+            </div>
         </div>
+        <div ng-if="checkSideMenu()"></div>
         <div ng-if="User.Leagues.length == 0" style="height:50%; margin-top:50%;">
             <img src="https://cdn0.iconfinder.com/data/icons/bicon/24/editor_document_file_empty_pencil_pen_edit_write_2-512.png" style="width:100px; height:100px; margin: 0 auto; display:block;" />
             <h4 style="text-align:center;">You aren't in any Leagues.</h4>

@@ -4,19 +4,19 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2f882b457354438c94aaa3967367f5d6" Name="Diagram1">
-        <EntityTypeShape EntityType="MyLeaguesModel.Game" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MyLeaguesModel.League" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MyLeaguesModel.LeagueRequest" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MyLeaguesModel.User" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MyLeaguesModel.UserLeague" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+      <Diagram DiagramId="86ffe01a5d2a4cfba0bb5c26ac87f0a5" Name="Diagram1">
+        <EntityTypeShape EntityType="MyLeaguesModel.Game" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyLeaguesModel.League" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyLeaguesModel.LeagueRequest" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyLeaguesModel.UserLeague" Width="1.5" PointX="6" PointY="4.25" IsExpanded="true" />
+        <AssociationConnector Association="MyLeaguesModel.FK_Game_League" ManuallyRouted="false" />
         <AssociationConnector Association="MyLeaguesModel.FK_Game_User" ManuallyRouted="false" />
         <AssociationConnector Association="MyLeaguesModel.FK_Game_User1" ManuallyRouted="false" />
         <AssociationConnector Association="MyLeaguesModel.FK_UserLeague_League" ManuallyRouted="false" />
-        <AssociationConnector Association="MyLeaguesModel.FK_UserLeague_User" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="MyLeaguesModel.SecurityToken" Width="1.5" PointX="3" PointY="8.875" />
-        <AssociationConnector Association="MyLeaguesModel.FK_SecurityToken_SecurityToken" />
-        <AssociationConnector Association="MyLeaguesModel.FK_Game_League" />
+        <EntityTypeShape EntityType="MyLeaguesModel.SecurityToken" Width="1.5" PointX="6" PointY="1" />
+        <EntityTypeShape EntityType="MyLeaguesModel.User" Width="1.5" PointX="3.75" PointY="0.75" />
+        <AssociationConnector Association="MyLeaguesModel.FK_SecurityToken_User" />
+        <AssociationConnector Association="MyLeaguesModel.FK_UserLeague_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

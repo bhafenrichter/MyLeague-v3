@@ -24,8 +24,8 @@ namespace MyLeague.Data
         public int LeagueID { get; set; }
         public System.DateTime CreatedOn { get; set; }
     
+        public virtual League League { get; set; }
         public virtual UserLeague UserLeague { get; set; }
         public virtual UserLeague UserLeague1 { get; set; }
-        public virtual League League { get; set; }
     }
 }

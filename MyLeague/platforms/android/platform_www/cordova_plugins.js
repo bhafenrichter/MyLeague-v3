@@ -228,6 +228,13 @@ module.exports = [
         "clobbers": [
             "window.FileTransfer"
         ]
+    },
+    {
+        "file": "plugins/phonegap-facebook-plugin/facebookConnectPlugin.js",
+        "id": "phonegap-facebook-plugin.FacebookConnectPlugin",
+        "clobbers": [
+            "facebookConnectPlugin"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -243,7 +250,8 @@ module.exports.metadata =
     "cordova-sqlite-storage": "1.4.6-pre5",
     "cordova-plugin-image-picker": "1.1.1",
     "cordova-plugin-file": "4.2.0",
-    "cordova-plugin-file-transfer": "1.5.1"
+    "cordova-plugin-file-transfer": "1.5.1",
+    "phonegap-facebook-plugin": "0.12.0"
 };
 // BOTTOM OF METADATA
 });

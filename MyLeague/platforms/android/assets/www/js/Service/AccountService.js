@@ -1,7 +1,7 @@
 ﻿var module = angular.module('AccountModule', []);
 
-var baseurl = "http://localhost:51147";
-//var baseurl = "http://myleague-data.azurewebsites.net";
+//var baseurl = "http://localhost:51147";
+var baseurl = "http://myleague-data.azurewebsites.net";
 module.service('AccountService', ['$http', function ($http) {
     var service = {};
 
@@ -48,7 +48,7 @@ module.service('AccountService', ['$http', function ($http) {
     };
 
     service.ValidateSecurityToken = function (id, token) {
-        return $http.post(baseurl + "/api/ValidateSecurityToken?id=" + id + "&token=" + token)
+        return $http.get(baseurl + "/api/ValidateSecurityToken?id=" + id + "&token=" + token)
             .success(function (data) {
                 if (data != null) {
                     return data;
@@ -75,5 +75,31 @@ module.service('AccountService', ['$http', function ($http) {
             });
     };
 
+    service.SaveUser = function (id, firstname, lastname) {
+        console.log("test");
+        return $http.post(baseurl + "/api/SaveUser?id=" + id + "&firstname=" + firstname + "&lastname=" + lastname).success(function (data) {
+            if (data != null) {
+                return data;
+            } else {
+                return {};
+            }
+        })
+            .error(function () {
+                return {};
+            });
+        };
+
+    service.GetUserForId = function (id) {
+        return $http.get(baseurl + "/api/GetUserForId?id=" + id).success(function (data) {
+            if (data != null) {
+                return data;
+            } else {
+                return {};
+            }
+        })
+            .error(function () {
+                return {};
+            });
+    };
     return service;
 }]);

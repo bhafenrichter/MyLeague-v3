@@ -26,12 +26,12 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
         controller: 'SettingsController'
     })
 
-    .state('Menu', {
-        url: '/Menu',
-        abstract: true,
-        templateUrl: 'View/Menu.html',
-        controller: 'MenuController'
-    })
+    //.state('Menu', {
+    //    url: '/Menu',
+    //    abstract: true,
+    //    templateUrl: 'View/Menu.html',
+    //    controller: 'MenuController'
+    //})
 
     .state('LeagueMenu', {
         url: '/LeagueMenu/id/:id',
@@ -40,7 +40,7 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
         controller: 'LeagueMenuController'
     })
 
-    .state('Menu.Home', {
+    .state('LeagueMenu.Home', {
         url: '/Home',
         views: {
             'MenuContent': {
@@ -50,15 +50,16 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
         }
     })
 
-        .state('Menu.Requests', {
-            url: '/Requests',
-            views: {
-                'MenuContent': {
-                    templateUrl: 'View/Requests.html',
-                    controller: 'LeagueRequestsController'
-                }
-            }
-        })
+
+        //.state('Menu.Requests', {
+        //    url: '/Requests',
+        //    views: {
+        //        'MenuContent': {
+        //            templateUrl: 'View/Requests.html',
+        //            controller: 'LeagueRequestsController'
+        //        }
+        //    }
+        //})
 
     .state('LeagueMenu.Profile', {
         url: '/Profile/id/:id',
@@ -91,6 +92,7 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
     })
 
     .state('LeagueMenu.LeagueHome', {
+        cache:false,
         url: '/LeagueHome/id/:id',
         views:{
             'MenuContent': {
@@ -113,5 +115,5 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
 
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/Login');
+    $urlRouterProvider.otherwise('/LeagueMenu/id/0/Home');
 });

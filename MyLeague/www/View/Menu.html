@@ -11,13 +11,18 @@
             <h1 class="title">Left</h1>
         </header>
         <ion-content class="has-header">
-            <ion-list>
-                <ion-item menu-close href="#/Menu/Requests">
-                    <i class="ion-location"></i> Requests
-                </ion-item>
-                
-                <ion-item menu-close>
-                    <button class="button button-block button-assertive" ng-click="Logout()">Logout</button>
+            <div class="profile" style="margin-top:45px;">
+                <div id="profile_picture" style="bottom:{{DeviceHeight / 5}}px;">
+                    <img ng-if="" ng-click="chooseProfilePicture()" src="" style="width:{{DeviceWidth / 4}}px; height:{{DeviceHeight / 6}}px; margin:auto; display:block; border-radius:25px;" />
+                    <img ng-click="chooseProfilePicture()" ng-src="{{ProfilePictureUrlBase}}{{User.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width: 50%;border-radius: 100px;left: 25%;position: relative;margin-top: 15px; height: 130px;" />
+                    <div id="base_information" style="text-align:center; margin-top:10px;">
+                        <h4>{{User.FirstName}} {{User.LastName}}</h4>
+                    </div>
+                </div>
+            </div>
+            <ion-list style="margin-top:45px;">
+                <ion-item>
+                    <a href="#/Settings" style="color:#191919; font-size:20px; text-decoration:none;"><i class="icon ion-gear-b"></i> Settings</a>
                 </ion-item>
             </ion-list>
         </ion-content>

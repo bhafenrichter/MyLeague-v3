@@ -1,9 +1,9 @@
 ﻿var module = angular.module('LeagueModule', []);
 
-var baseurl = "http://localhost:51147";
-//var baseurl = "http://myleague-data.azurewebsites.net"
+//var baseurl = "http://localhost:51147";
+var baseurl = "http://myleague-data.azurewebsites.net"
 module.service('LeagueService', ['$http', function ($http) {
-    var service = {};
+    var service = {};   
     service.GetLeaguesForUser = function (userid) {
         return $http.get(baseurl + "/api/GetLeaguesForUser?id=" + userid);
     };

@@ -27,3 +27,22 @@
     .league-body{
         background-color:#ECEFF1;
     }
+
+    .button-positive{
+        background-color:#2196F3 !important;
+    }
+
+    .button-balanced {
+    }
+
+    .bar-positive{
+        background-color:#2196F3 !important;
+    }
+
+    .bar-positive .button{
+        background-color:#2196F3 !important;
+    }
+
+    .button-assertive{
+        background-color:#F44336;
+    }

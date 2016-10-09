@@ -9,6 +9,7 @@
                            on-refresh="refreshLeague()">
             </ion-refresher>
             <div ng-repeat="game in Model.Games">
+
                 <div class="card" ng-click="selectGame(game.ID)">
                     <div class="game-entry">
                         <div class="row">

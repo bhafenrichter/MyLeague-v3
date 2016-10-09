@@ -1,6 +1,6 @@
 ﻿<ion-view title="Schedule">
     <ion-content overflow-scroll="true" padding="true" class="has-header league-body">
-        <div ng-repeat="game in Model.Games">
+        <div ng-repeat="game in Model.Games | orderBy: CreatedOn">
             <div class="card" ng-click="selectGame(game.ID)">
                 <div class="game-entry">
                     <div class="row">
@@ -15,7 +15,7 @@
                                 <div class="col-20" style="margin-top:5px;">
                                     <p style="font-weight:bold;" ng-if="game.UserScore > game.OpponentScore">{{game.UserScore}}</p>
                                     <p ng-if="game.UserScore < game.OpponentScore">{{game.UserScore}}</p>
-
+                                    <p ng-if="game.UserScore == game.OpponentScore">{{game.UserScore}}</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -29,7 +29,7 @@
                                 <div class="col-20" style="margin-top:5px;">
                                     <p style="font-weight:bold;" ng-if="game.UserScore < game.OpponentScore">{{game.OpponentScore}}</p>
                                     <p ng-if="game.UserScore > game.OpponentScore">{{game.OpponentScore}}</p>
-
+                                    <p ng-if="game.UserScore == game.OpponentScore">{{game.OpponentScore}}</p>
                                 </div>
                             </div>
                         </div>

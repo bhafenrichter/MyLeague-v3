@@ -28,8 +28,8 @@ namespace MyLeague.Data
         public virtual DbSet<Game> Games { get; set; }
         public virtual DbSet<League> Leagues { get; set; }
         public virtual DbSet<LeagueRequest> LeagueRequests { get; set; }
-        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserLeague> UserLeagues { get; set; }
         public virtual DbSet<SecurityToken> SecurityTokens { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

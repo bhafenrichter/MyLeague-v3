@@ -17,8 +17,8 @@ namespace MyLeague.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.UserLeagues = new HashSet<UserLeague>();
             this.SecurityTokens = new HashSet<SecurityToken>();
+            this.UserLeagues = new HashSet<UserLeague>();
         }
     
         public int ID { get; set; }
@@ -30,8 +30,8 @@ namespace MyLeague.Data
         public Nullable<System.DateTime> CreatedOn { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserLeague> UserLeagues { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SecurityToken> SecurityTokens { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserLeague> UserLeagues { get; set; }
     }
 }

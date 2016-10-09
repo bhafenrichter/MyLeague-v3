@@ -33,6 +33,11 @@
         },
         "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "com.ionicframework.ionicblankapp"
+        },
+        "phonegap-facebook-plugin": {
+            "APP_ID": "649059798596689",
+            "APP_NAME": "MyLeague",
+            "PACKAGE_NAME": "com.ionicframework.ionicblankapp"
         }
     },
     "dependent_plugins": {

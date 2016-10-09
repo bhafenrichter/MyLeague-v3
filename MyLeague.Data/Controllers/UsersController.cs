@@ -54,6 +54,20 @@ namespace MyLeague.Data.Controllers
             }
         }
 
+        [Route("api/GetUserForId")]
+        public User GetUserForId(int id)
+        {
+            db.Configuration.LazyLoadingEnabled = false;
+            var user = db.Users
+                .Where(x => x.ID == id)
+                .Include("UserLeagues")
+                .Include("UserLeagues.League")
+                .Include("UserLeagues.Games")
+                .Include("UserLeagues.Games1")
+                .FirstOrDefault();
+            return user;
+        }       
+
         [Route("api/GenerateSecurityToken")]
         public SecurityToken GenerateSecurityToken(int id)
         {
@@ -68,6 +82,7 @@ namespace MyLeague.Data.Controllers
             return token;
         }
 
+        [HttpGet]
         [Route("api/ValidateSecurityToken")]
         public SecurityToken ValidateSecurityToken(int id, string token)
         {
@@ -75,11 +90,26 @@ namespace MyLeague.Data.Controllers
             //TODO: Add timeout for security token
             db.Configuration.LazyLoadingEnabled = false;
             var securityToken = db.SecurityTokens
-                .Include("User.UserLeagues.League.Games.UserLeague")
-                .Include("User.UserLeagues.League.Games.UserLeague1")
                 .Where(x => x.UserID == id && x.SessionToken == token && x.isValid == true)
                 .FirstOrDefault();
             return securityToken;
+        }
+
+        [Route ("api/SaveUser")]
+        public bool SaveUser(int id, string firstName, string lastName)
+        {
+            try
+            {
+                var user = db.Users.Where(x => x.ID == id).FirstOrDefault();
+                user.FirstName = firstName;
+                user.LastName = lastName;
+                db.SaveChanges();
+                return true;
+            }catch(Exception e)
+            {
+                return false;
+            }
+           
         }
 
         // GET: api/Users/5
