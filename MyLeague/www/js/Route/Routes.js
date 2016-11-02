@@ -81,7 +81,7 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
         }
     })
 
-    .state('Menu.CreateLeague', {
+    .state('LeagueMenu.CreateLeague', {
         url: '/CreateLeague',
         views:{
             'MenuContent':{

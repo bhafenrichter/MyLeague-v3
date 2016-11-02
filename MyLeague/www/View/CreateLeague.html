@@ -1,16 +1,36 @@
-﻿<ion-view title="Create League">
-    <ion-content overflow-scroll="true" padding="true" class="has-header" style="background-color:lightgrey;">
+﻿<style>
+    .item-input {
+        background-color: rgba(0, 0, 0, 0);
+    }
+
+    .card {
+        margin: 30px auto;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+    }
+
+    .input-label {
+        color: white;
+    }
+</style>
+
+
+<ion-view title="Create League">
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
         <div class="spacer" style="height: 40px;"></div>
-        <ion-list>
-            <label class="item item-input">
-                <span class="input-label">League Name</span>
-                <input type="text" ng-model="name">
-            </label>
-            <label class="item item-input">
-                <span class="input-label">League Type</span>
-                <input type="text" ng-model="type">
-            </label>
-        </ion-list>
+        <div class="card">
+            <ion-list>
+                <label class="item item-input">
+                    <span class="input-label">League Name</span>
+                    <input type="text" ng-model="name" style="color:white;">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">League Type</span>
+                    <input type="text" ng-model="type" style="color:white;">
+                </label>
+            </ion-list>
+        </div>
+       
         <div class="spacer" style="height: 40px;"></div>
         <button type="button" class="button button-positive button-block" ng-click="CreateLeague(name,type)">Create League</button>
     </ion-content>

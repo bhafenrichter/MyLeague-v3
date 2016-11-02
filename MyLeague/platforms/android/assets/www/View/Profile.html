@@ -23,32 +23,51 @@
             </div>
         </div>
 
-        <div id="statistics" class="row" style="text-align:center; position:relative; bottom:50px;">
-            <div class="col-33">
-                <h1>{{(Model.UserLeague.PointsScored / Model.UserLeague.GamesPlayed).toFixed(2)}}</h1>
-                <p>Points Scored</p>
+        <div id="statistics" style="text-align:center; position:relative; bottom:50px;">
+            <div class="row" style="margin-bottom:15px;">
+                <div class="col-33">
+                    <h1>{{(Model.UserLeague.PointsScored / Model.UserLeague.GamesPlayed).toFixed(2)}}</h1>
+                    <p>Points Scored</p>
+                </div>
+                <div class="col-33">
+                    <h1>{{(Model.UserLeague.PointsAllowed / Model.UserLeague.GamesPlayed).toFixed(2)}}</h1>
+                    <p>Points Allowed</p>
+                </div>
+                <div class="col-33">
+                    <h1>{{Model.UserLeague.GamesPlayed}}</h1>
+                    <p>Games Played</p>
+                </div>
             </div>
-            <div class="col-33">
-                <h1>{{(Model.UserLeague.PointsAllowed / Model.UserLeague.GamesPlayed).toFixed(2)}}</h1>
-                <p>Points Allowed</p>
+            <div class="row">
+                <div class="col-50">
+                    <h1>{{GetRank('offense')}}</h1>
+                    <p>Offensive Rank</p>
+                </div>
+                <div class="col-50">
+                    <h1>{{GetRank('defense')}}</h1>
+                    <p>Defensive Rank</p>
+                </div>
             </div>
-            <div class="col-33">
-                <h1>{{Model.UserLeague.GamesPlayed}}</h1>
-                <p>Games Played</p>
-            </div>
+           
         </div>
-        <div id="recentGames" style="position:relative; position:absolute; bottom:30px; width:100%">
+        <!--<div id="recentGames" style="position:relative; position:absolute; bottom:30px; width:100%">
             <div class="row">
                 <h4 style="text-align:center; width:100%; margin:0px;">Recent Games</h4>
             </div>
             <div id="recentGamesBody" style="padding:0px 15px 0px 15px;">
                 <div class="row" ng-repeat="game in Model.UserLeague.Games.concat(Model.UserLeague.Games1) | filter: orderBy: CreatedOn | limitTo:3">
                     <div class="col-50">
-                        <div ng-if="game.UserLeague">
-                            <p>{{game.UserLeague.User.FirstName.substring(0,1)}}. {{game.UserLeague.User.LastName}}</p>
+                        <div ng-if="game.UserLeague.ID != Model.UserLeague.ID">
+                            <p>
+                                <img ng-src="{{ProfilePictureUrlBase}}{{game.UserLeague.User.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:25px; height:25px; margin:auto; display:inline; border-radius:25px;" />
+                                <span style="position:relative; bottom:10px;">{{game.UserLeague.User.FirstName.substring(0,1)}}. {{game.UserLeague.User.LastName}}</span>
+                            </p>
                         </div>
-                        <div ng-if="game.UserLeague1">
-                            <p>{{game.UserLeague1.User.FirstName.substring(0,1)}}. {{game.UserLeague1.User.LastName}}</p>
+                        <div ng-if="game.UserLeague1.ID != Model.UserLeague.ID">
+                            <p>
+                                <img ng-src="{{ProfilePictureUrlBase}}{{game.UserLeague1.User.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:25px; height:25px; margin:auto; display:inline; border-radius:25px;" />
+                                <span style="position:relative; bottom:10px;">{{game.UserLeague1.User.FirstName.substring(0,1)}}. {{game.UserLeague1.User.LastName}}</span>
+                            </p>
                         </div>
                         <div ng-if="!game.UserLeague && !game.UserLeague1">
                             <p>{{User.FirstName.substring(0,1)}}. {{User.LastName}}</p>
@@ -61,8 +80,8 @@
                         <p>{{game.OpponentScore}}</p>
                     </div>
                 </div>
-                <a href="#/LeagueMenu/id/{{Model.League.ID}}/Schedule/id/{{Model.UserLeague.ID}}" class="button button-positive" style="width:100%;">See Full Schedule</a>
             </div>
-        </div>
+        </div>-->
+        <a href="#/LeagueMenu/id/{{Model.League.ID}}/Schedule/id/{{Model.UserLeague.ID}}" class="button button-positive button-block" style="margin:15px;">See Full Schedule</a>
     </ion-content>
 </ion-view>

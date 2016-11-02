@@ -166,7 +166,7 @@ namespace MyLeague.Data.Controllers
                 db.Configuration.LazyLoadingEnabled = false;
                 var query = db.UserLeagues
                     .Include("User")
-                    .Where(x => x.LeagueID == id && x.IsDeleted == false)
+                    .Where(x => x.LeagueID == id)
                     .ToList();
 
                 return query;

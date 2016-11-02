@@ -173,9 +173,18 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
         $ionicSideMenuDelegate.toggleRight();
     };
 
-    $scope.LeaveLeague = function (id) {
+    $scope.LeaveLeague = function (leagueid) {
+        var id = -1;
+        for (var i = 0; i < $rootScope.User.UserLeagues.length; i++) {
+            if ($rootScope.User.UserLeagues[i].LeagueID == leagueid) {
+                id = $rootScope.User.UserLeagues[i].ID;
+            }
+        }
+
+        console.log(id);
+
         LeagueService.LeaveLeague(id).then(function () {
-            $state.go("Home");
+            $state.go("LeagueMenu.Home");
         });
     }
 
@@ -507,6 +516,40 @@ module.controller('ProfileController', ['$scope', 'AccountService', '$rootScope'
         }
     }
 
+    $scope.GetRank = function (type) {
+        //get the userleagues 
+        var userleagues = [];
+        for (var i = 0; i < $rootScope.User.Leagues.length; i++) {
+            if ($rootScope.User.Leagues[i].ID == $scope.Model.UserLeague.LeagueID) {
+                userleagues = $rootScope.User.Leagues[i].UserLeagues;
+            }
+        }
+
+        console.log(userleagues);
+
+        if (type == 'offense') {
+            var rank = 1;
+            var userGamesPlayed = $scope.Model.UserLeague.Games.length + $scope.Model.UserLeague.Games1.length;
+            for (var i = 0; i < userleagues.length; i++) {
+                if ((userleagues[i].PointsScored / (userleagues[i].Games.length + userleagues[i].Games1.length)) > ($scope.Model.UserLeague.PointsScored / userGamesPlayed) && userleagues[i].ID != $scope.Model.UserLeague.ID) {
+                    rank++;
+                }
+            }
+            return rank;
+        } else if (type == 'defense') {
+            var rank = 1;
+            var userGamesPlayed = $scope.Model.UserLeague.Games.length + $scope.Model.UserLeague.Games1.length;
+            for (var i = 0; i < userleagues.length; i++) {
+                if ((userleagues[i].PointsAllowed / (userleagues[i].Games.length + userleagues[i].Games1.length)) < ($scope.Model.UserLeague.PointsAllowed / userGamesPlayed) && userleagues[i].ID != $scope.Model.UserLeague.ID) {
+                    rank++;
+                }
+            }
+            return rank;
+        } else {
+            return '';
+        }
+    }
+
     console.log($scope.Model);
     
 }]);
@@ -535,14 +578,12 @@ module.controller('ScheduleController', ['$scope', 'AccountService', '$rootScope
     $scope.Model.Games = $scope.Model.UserLeague.Games.concat($scope.Model.UserLeague.Games1);
 }]);
 
-module.controller('CreateLeagueController', ['$scope', '$rootScope', 'LeagueService', '$ionicHistory', function ($scope, $rootScope, LeagueService, $ionicHistory) {
+module.controller('CreateLeagueController', ['$scope', '$rootScope', 'LeagueService', '$ionicHistory', 'PopupService', function ($scope, $rootScope, LeagueService, $ionicHistory, PopupService) {
     $scope.User = $rootScope.User;
     $scope.CreateLeague = function (name, type) {
         LeagueService.CreateLeague(name, type, $scope.User.ID).then(function (event) {
-            LeagueService.GetLeaguesForUser($scope.User.ID).then(function (response) {
-                $rootScope.User.Leagues = response.data;
-                $ionicHistory.goBack();
-            });
+            $ionicHistory.goBack();
+            PopupService.MessageDialog("League Created!");
         });
     };
 }]);
