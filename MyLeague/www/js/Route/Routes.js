@@ -20,10 +20,14 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
         controller: 'CreateController'
     })
 
-    .state('Settings', {
+    .state('LeagueMenu.Settings', {
         url: '/Settings',
-        templateUrl: 'View/Settings.html',
-        controller: 'SettingsController'
+        views: {
+            'MenuContent': {
+                templateUrl: 'View/Settings.html',
+                controller: 'SettingsController'
+            }
+        }
     })
 
     //.state('Menu', {

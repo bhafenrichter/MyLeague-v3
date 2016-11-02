@@ -202,20 +202,20 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
 
     });
 
-    $scope.chooseLeagueAvatar = function () {
+    $scope.chooseLeagueAvatar = function (id) {
         var options = {
             maximumImagesCount: 1,
             width: 800,
             height: 800,
             quality: 80
         };
-
+        console.log(id);
         $cordovaImagePicker.getPictures(options).then(function (results) {
             var options = {};
             options.mimeType = "multipart/form-data";
             options.httpMethod = "POST";
             options.headers = { Connection: "close" };
-            $cordovaFileTransfer.upload("http://myleague-data.azurewebsites.net/api/AvatarUpload?id=" + $stateParams.id, results[0], {}).then(function (results) {
+            $cordovaFileTransfer.upload("http://myleague-data.azurewebsites.net/api/AvatarUpload?id=" + id, results[0], {}).then(function (results) {
                 $state.reload();
                 console.log(results);
             }, function (err) {
@@ -353,12 +353,12 @@ module.controller('HomeController', ['$scope', '$rootScope', 'LeagueService', 'A
         }
     };
 
-    $rootScope.redirectToLeagueMenu = function () {
+    $rootScope.redirectToSettingsMenu = function () {
         $ionicHistory.clearCache();
         if ($ionicSideMenuDelegate.isOpen()) {
             $ionicSideMenuDelegate.toggleRight();
         }
-        $state.go('LeagueMenu.Home');
+        $state.go('LeagueMenu.Settings');
     }
 }]);
 

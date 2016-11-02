@@ -11,7 +11,7 @@
             <h1 class="title">Standings</h1>
         </header>-->
         <ion-content class="has-header">
-            <img src="https://myleague.blob.core.windows.net/league-avatar/{{Model.League.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:50%; border-radius:100px; left:25%; position:relative; margin-top:15px; height:130px;" ng-click="chooseLeagueAvatar()" />
+            <img src="https://myleague.blob.core.windows.net/league-avatar/{{Model.League.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:50%; border-radius:100px; left:25%; position:relative; margin-top:15px; height:130px;" ng-click="chooseLeagueAvatar(Model.League.ID)" />
             <div class="header">
                 <h4 style="text-align:center;">Current Standings</h4>
             </div>
