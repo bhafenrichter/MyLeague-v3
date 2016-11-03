@@ -87,6 +87,7 @@ module.controller('SettingsController', ['$scope', '$state', '$window', '$rootSc
             options.headers = { Connection: "close" };
             $cordovaFileTransfer.upload("http://myleague-data.azurewebsites.net/api/Upload?id=" + $rootScope.User.ID, results[0], {}).then(function (results) {
                 console.log(results);
+                PopupService.MessageDialog("Profile Picture successfully uploaded.  Changes may take a bit to process.");
             }, function (err) {
                 console.log(err);
             }, function (progress) {
@@ -108,6 +109,7 @@ module.controller('SettingsController', ['$scope', '$state', '$window', '$rootSc
                 PopupService.MessageDialog("There was an internal error.  Please try again later.");
             }
             
+            PopupService.MessageDialog("Information saved.");
             $state.go("Home");
         });
     };
@@ -217,6 +219,7 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
             options.headers = { Connection: "close" };
             $cordovaFileTransfer.upload("http://myleague-data.azurewebsites.net/api/AvatarUpload?id=" + id, results[0], {}).then(function (results) {
                 $state.reload();
+                PopupService.MessageDialog("League Picture successfully uploaded.  Changes may take a bit to process.");
                 console.log(results);
             }, function (err) {
                 console.log(err);
@@ -233,10 +236,19 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
 
 
     $scope.getRecordHeuristic = function (userleague) {
+        var maxGameCount = 0;
+        for (var i = 0; i < $scope.Model.League.UserLeagues.length; i++) {
+            if ($scope.Model.League.UserLeagues[i].Games.length + $scope.Model.League.UserLeagues[i].Games1.length > maxGameCount) {
+                maxGameCount = $scope.Model.League.UserLeagues[i].Games.length + $scope.Model.League.UserLeagues[i].Games1.length;
+            }
+        }
         var gamesPlayed = userleague.Games.length + userleague.Games1.length;
+        if (gamesPlayed == 0) { return 0;}
         //games played accounts for 35% of value and legitimacy
-        var heuristic = (gamesPlayed / maxGameCount) * .35;
-        heuristic += (userleague.Wins / gamesPlayed) * .65;
+        var heuristic = (gamesPlayed / maxGameCount) * .25;
+        heuristic += (userleague.Wins / (userleague.Wins + userleague.Losses)) * .75;
+        console.log(userleague.User.FirstName);
+        console.log(heuristic);
         return -heuristic;
     }
 }]);
