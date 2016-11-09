@@ -1,4 +1,4 @@
-﻿//define the module so that app.js can recognize it
+//define the module so that app.js can recognize it
 var module = angular.module('HomeController', []);
 
 module.controller('LoginController', ['$scope', 'PopupService', 'AccountService', '$state', '$rootScope', '$ionicLoading', '$ionicHistory', '$ionicSideMenuDelegate', '$window', function ($scope, PopupService, AccountService, $state, $rootScope, $ionicLoading, $ionicHistory, $ionicSideMenuDelegate, $window) {
@@ -508,12 +508,16 @@ module.controller('CreateGameController', ['$scope', 'AccountService', '$rootSco
 
 }]);
 
-module.controller('ProfileController', ['$scope', 'AccountService', '$rootScope', '$stateParams', 'LeagueService', '$window', '$ionicLoading', function ($scope, AccountService, $rootScope, $stateParams, LeagueService, $window, $ionicLoading) {
+module.controller('ProfileController', ['$scope', 'AccountService', '$rootScope', '$stateParams', 'LeagueService', '$window', '$ionicLoading', '$ionicSideMenuDelegate', function ($scope, AccountService, $rootScope, $stateParams, LeagueService, $window, $ionicLoading, $ionicSideMenuDelegate) {
     $scope.Model = {};
     $scope.Model._name = "Profile";
-
+    
     $ionicLoading.show({ template: 'Loading User' });
 
+      if ($ionicSideMenuDelegate.isOpen()) {
+            $ionicSideMenuDelegate.toggleRight();
+        }
+    
     //index used for looking up userleagues
     var leagueIndex = 0; 
     for (var i = 0; i < $rootScope.User.Leagues.length; i++) {

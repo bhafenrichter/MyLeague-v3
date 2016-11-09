@@ -1,4 +1,4 @@
-﻿<ion-side-menus>
+<ion-side-menus>
     <ion-side-menu-content>
         <!--<ion-nav-bar class="bar-stable nav-title-slide-ios7">
             <ion-nav-back-button class="button-clear"><i class="icon ion-ios7-arrow-back"></i> Back</ion-nav-back-button>
@@ -17,7 +17,7 @@
             </div>
             <ion-list>
                 <div ng-repeat="userleague in Model.League.UserLeagues | orderBy:getRecordHeuristic">
-                    <ion-item menu-toggle="right" href="#/LeagueMenu/id/{{Model.League.ID}}/Profile/id/{{userleague.ID}}">
+                    <ion-item href="#/LeagueMenu/id/{{Model.League.ID}}/Profile/id/{{userleague.ID}}">
                         <h2>{{$index + 1}}. {{userleague.User.FirstName.substring(0,1)}}. {{userleague.User.LastName}}<span style="float:right; font-weight:bold;">{{userleague.Wins}}-{{userleague.Losses}}</span></h2>
                     </ion-item>
                 </div>

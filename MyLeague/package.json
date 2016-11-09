@@ -23,5 +23,7 @@
     "cordova-plugin-camera",
     "cordova-plugin-compact"
   ],
-  "cordovaPlatforms": []
+  "cordovaPlatforms": [
+    "ios"
+  ]
 }

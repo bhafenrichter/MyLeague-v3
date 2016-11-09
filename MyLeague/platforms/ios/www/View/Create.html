@@ -1,0 +1,44 @@
+﻿<style>
+    .item-input{
+        background-color:rgba(0, 0, 0, 0);
+    }
+    .card{
+         margin:30px auto; 
+         background-color:rgba(0, 0, 0, 0.5); 
+         border-radius:5px;
+    }
+
+    .input-label{
+        color:white;
+    }
+</style>
+
+<ion-view title="Login" hide-nav-bar="true">
+    <ion-content overflow-scroll="true" padding="true" class="has-header" style="background-image:url('img/blue-blur.png'); background-size:cover; margin-top:-45px;">
+        <h1 style="text-align:center; color:white; margin-top:50px;">Create An Account</h1>
+        <div class="spacer" style="height: 40px;"></div>
+        <div class="card">
+            <ion-list>
+                <label class="item item-input">
+                    <span class="input-label">Email</span>
+                    <input type="text" ng-model="email" style="color:white;">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Password</span>
+                    <input type="password" ng-model="password" style="color:white;">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">First Name</span>
+                    <input type="text" ng-model="firstname" style="color:white;">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Last Name</span>
+                    <input type="text" ng-model="lastname" style="color:white;">
+                </label>
+            </ion-list>
+            <a href="#/createAccount" class="button button-balanced button-block" ng-click="CreateAccount(email,password,firstname,lastname)" style="margin:15px auto; width:95%;">Create Account</a>
+            <a href="#/Login" class="button button-positive button-block" ng-click="$ionicNavBarDelegate.back();" style="margin:15px auto; width:95%;">Back to Login</a>
+        </div>
+        
+    </ion-content>
+</ion-view>
