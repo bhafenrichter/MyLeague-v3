@@ -10,8 +10,9 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
         $state.go('LeagueMenu.Home');
     }
 
-    $rootScope.isLeagueHome = function () {
-        if ($rootScope.User != null) {
+    $rootScope.isHomePage = function () {
+        console.log($state.current.name);
+        if ($state.current.name == 'LeagueMenu.Home') {
             return true;
         } else {
             return false;
@@ -21,7 +22,15 @@ module.controller('LoginController', ['$scope', 'PopupService', 'AccountService'
     $scope.Login = function (Username, Password) {
         //make it a promise
         $ionicLoading.show({ template: 'Logging In' });
+        var processFinished = false;
+        setTimeout(function () {
+            if(processFinished == false){
+                PopupService.MessageDialog("Connection timed out. Please try again.");
+                $ionicLoading.hide();
+            }
+        },3000); 
         AccountService.Login(Username, Password).then(function (response) {
+            processFinished = true;
             console.log(response);
             $ionicLoading.hide();
             if (response.data != null) {
@@ -58,8 +67,8 @@ module.controller('MenuController', ['$scope', '$state', '$window', '$rootScope'
         $state.go('Login');
     }
 
-    $scope.DeviceHeight = $window.innerHeight;
-    $scope.DeviceWidth = $window.innerWidth;
+    $rootScope.DeviceHeight = $window.innerHeight;
+    $rootScope.DeviceWidth = $window.innerWidth;
 
 }]);
 
@@ -69,8 +78,10 @@ module.controller('SettingsController', ['$scope', '$state', '$window', '$rootSc
         $state.go('Login');
     }
     console.log($rootScope.User.ID);
-    $scope.DeviceHeight = $window.innerHeight;
-    $scope.DeviceWidth = $window.innerWidth;
+    $rootScope.SettingsDeviceHeight = $window.innerHeight;
+    $rootScope.SettingsDeviceWidth = $window.innerWidth;
+
+    console.log($rootScope.DeviceHeight);
 
     $scope.chooseProfilePicture = function () {
         var options = {
@@ -237,6 +248,7 @@ module.controller('LeagueMenuController', ['$scope', '$state', '$window', '$root
 
     $scope.getRecordHeuristic = function (userleague) {
         var maxGameCount = 0;
+
         for (var i = 0; i < $scope.Model.League.UserLeagues.length; i++) {
             if ($scope.Model.League.UserLeagues[i].Games.length + $scope.Model.League.UserLeagues[i].Games1.length > maxGameCount) {
                 maxGameCount = $scope.Model.League.UserLeagues[i].Games.length + $scope.Model.League.UserLeagues[i].Games1.length;
@@ -478,8 +490,9 @@ module.controller('CreateGameController', ['$scope', 'AccountService', '$rootSco
 
     $scope.SelectUser = function (user) {
         if (user.UserID != $scope.Model.User.UserID) {
+            console.log(user);
             $scope.Model.Opponent = user;
-            $scope.OpponentUrl = $rootScope.ProfilePictureUrlBase + $scope.Model.Opponent.ID + ".png";
+            $scope.OpponentUrl = $rootScope.ProfilePictureUrlBase + $scope.Model.Opponent.User.ID + ".png";
             $scope.closeModal();
         } else {
             PopupService.MessageDialog("You cannot select yourself.");
@@ -499,9 +512,6 @@ module.controller('ProfileController', ['$scope', 'AccountService', '$rootScope'
     $scope.Model = {};
     $scope.Model._name = "Profile";
 
-    $scope.DeviceHeight = $window.innerHeight;
-    $scope.DeviceWidth = $window.innerWidth;
-
     $ionicLoading.show({ template: 'Loading User' });
 
     //index used for looking up userleagues
@@ -515,6 +525,18 @@ module.controller('ProfileController', ['$scope', 'AccountService', '$rootScope'
                 $scope.Model.User = $rootScope.User.Leagues[i].UserLeagues[j].User;
                 $scope.Model.UserLeague.GamesPlayed = $scope.Model.UserLeague.Games.length + $scope.Model.UserLeague.Games1.length;
                 $ionicLoading.hide();
+
+
+
+                if ($scope.Model.UserLeague.GamesPlayed > 0) {
+                    $scope.Model.PointsScoredAvg = ($scope.Model.UserLeague.PointsScored / $scope.Model.UserLeague.GamesPlayed).toFixed(2);
+                    $scope.Model.PointsAllowedAvg = ($scope.Model.UserLeague.PointsAllowed / $scope.Model.UserLeague.GamesPlayed).toFixed(2);
+                } else {
+                    $scope.Model.PointsScoredAvg = 0;
+                    $scope.Model.PointsAllowedAvg = 0;
+                }
+
+
                 console.log($scope.Model.UserLeague);
             }
         }
@@ -531,17 +553,20 @@ module.controller('ProfileController', ['$scope', 'AccountService', '$rootScope'
     $scope.GetRank = function (type) {
         //get the userleagues 
         var userleagues = [];
+        var league = $rootScope.User.Leagues[0];
+        var rank = 1;
         for (var i = 0; i < $rootScope.User.Leagues.length; i++) {
             if ($rootScope.User.Leagues[i].ID == $scope.Model.UserLeague.LeagueID) {
                 userleagues = $rootScope.User.Leagues[i].UserLeagues;
+                league = $rootScope.User.Leagues[i];
             }
         }
 
         console.log(userleagues);
 
         if (type == 'offense') {
-            var rank = 1;
             var userGamesPlayed = $scope.Model.UserLeague.Games.length + $scope.Model.UserLeague.Games1.length;
+            if (userGamesPlayed == 0) { return league.UserLeagues.length;}
             for (var i = 0; i < userleagues.length; i++) {
                 if ((userleagues[i].PointsScored / (userleagues[i].Games.length + userleagues[i].Games1.length)) > ($scope.Model.UserLeague.PointsScored / userGamesPlayed) && userleagues[i].ID != $scope.Model.UserLeague.ID) {
                     rank++;
@@ -549,8 +574,8 @@ module.controller('ProfileController', ['$scope', 'AccountService', '$rootScope'
             }
             return rank;
         } else if (type == 'defense') {
-            var rank = 1;
             var userGamesPlayed = $scope.Model.UserLeague.Games.length + $scope.Model.UserLeague.Games1.length;
+            if (userGamesPlayed == 0) { return league.UserLeagues.length; }
             for (var i = 0; i < userleagues.length; i++) {
                 if ((userleagues[i].PointsAllowed / (userleagues[i].Games.length + userleagues[i].Games1.length)) < ($scope.Model.UserLeague.PointsAllowed / userGamesPlayed) && userleagues[i].ID != $scope.Model.UserLeague.ID) {
                     rank++;
@@ -561,6 +586,7 @@ module.controller('ProfileController', ['$scope', 'AccountService', '$rootScope'
             return '';
         }
     }
+
 
     console.log($scope.Model);
     

@@ -8,7 +8,7 @@
             <ion-refresher pulling-text="Pull to refresh..."
                            on-refresh="refreshLeague()">
             </ion-refresher>
-            <div ng-repeat="game in Model.Games">
+            <div ng-repeat="game in Model.Games" style="margin-bottom:15px;">
 
                 <div class="card" ng-click="selectGame(game.ID)">
                     <div class="game-entry">

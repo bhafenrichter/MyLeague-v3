@@ -1,9 +1,9 @@
 ﻿<ion-view title="Profile Settings">
     <ion-content overflow-scroll="true" padding="true" class="has-header" style="background-color:#ECEFF1;">
         <div class="profile">
-            <div id="profile_picture" style="bottom:{{DeviceHeight / 5}}px;">
-                <img ng-if="" ng-click="chooseProfilePicture()" src="" style="width:{{DeviceWidth / 2}}px; height:{{DeviceHeight / 3}}px; margin:auto; display:block; border-radius:25px;" />
-                <img ng-click="chooseProfilePicture()"  ng-src="{{ProfilePictureUrlBase}}{{User.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:{{DeviceWidth / 2}}px; height:{{DeviceHeight / 3}}px; margin:auto; display:block; border-radius:25px;" />
+            <div id="profile_picture">
+                <img ng-if="" ng-click="chooseProfilePicture()" src="" style="width:200px; height:200px; margin:auto; display:block; border-radius:25px;" />
+                <img ng-click="chooseProfilePicture()"  ng-src="{{ProfilePictureUrlBase}}{{User.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:200px; height:200px; margin:auto; display:block; border-radius:25px;" />
                 <div id="base_information" style="text-align:center; margin-top:10px;">
                     <div class="list">
                         <label class="item item-input">

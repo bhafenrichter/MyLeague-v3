@@ -22,6 +22,7 @@ routes.config(function ($stateProvider, $urlRouterProvider) {
 
     .state('LeagueMenu.Settings', {
         url: '/Settings',
+        cache: false,
         views: {
             'MenuContent': {
                 templateUrl: 'View/Settings.html',

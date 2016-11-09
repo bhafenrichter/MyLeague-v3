@@ -26,11 +26,11 @@
         <div id="statistics" style="text-align:center; position:relative; bottom:50px;">
             <div class="row" style="margin-bottom:15px;">
                 <div class="col-33">
-                    <h1>{{(Model.UserLeague.PointsScored / Model.UserLeague.GamesPlayed).toFixed(2)}}</h1>
+                    <h1>{{Model.PointsScoredAvg}}</h1>
                     <p>Points Scored</p>
                 </div>
                 <div class="col-33">
-                    <h1>{{(Model.UserLeague.PointsAllowed / Model.UserLeague.GamesPlayed).toFixed(2)}}</h1>
+                    <h1>{{Model.PointsAllowedAvg}}</h1>
                     <p>Points Allowed</p>
                 </div>
                 <div class="col-33">

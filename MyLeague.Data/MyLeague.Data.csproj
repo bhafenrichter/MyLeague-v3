@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <ApplicationInsightsResourceId>/subscriptions/b69b228d-4bf6-4650-a273-64f4f9ddb320/resourcegroups/Default-ApplicationInsights-CentralUS/providers/microsoft.insights/components/MyLeague.Data</ApplicationInsightsResourceId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -409,6 +410,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-3.1.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.0.min.map" />
+    <Content Include="Service References\Application Insights\ConnectedService.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -421,6 +423,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

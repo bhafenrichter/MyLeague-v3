@@ -11,7 +11,7 @@
             <h1 class="title">Standings</h1>
         </header>-->
         <ion-content class="has-header">
-            <img src="https://myleague.blob.core.windows.net/league-avatar/{{Model.League.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:50%; border-radius:100px; left:25%; position:relative; margin-top:15px; height:130px;" ng-click="chooseLeagueAvatar()" />
+            <img src="https://myleague.blob.core.windows.net/league-avatar/{{Model.League.ID}}.png" fallback-src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" style="width:50%; border-radius:100px; left:25%; position:relative; margin-top:15px; height:130px;" ng-click="chooseLeagueAvatar(Model.League.ID)" />
             <div class="header">
                 <h4 style="text-align:center;">Current Standings</h4>
             </div>
@@ -38,16 +38,16 @@
             <button class="button button-clear button-primary" ng-click="modal.hide()">Cancel</button>
         </ion-header-bar>
         <ion-content class="padding">
-            <div class="row">
+            <div class="row" style="padding-left:0px; padding-right:0px;">
                 <div class="col-80">
-                    <label class="item item-input">
+                    <label class="item item-input" style="margin-top:1px; padding-bottom:2px;">
                         <span class="input-label">Search</span>
-                        <input type="text" ng-model="searchText">
+                        <input type="text" ng-model="searchText" placeholder="Type Here...">
                         <button class="button-clear icon ion-close-circled"></button>
                     </label>
                 </div>
                 <div class="col-20">
-                    <button ng-click="SearchUsers(searchText)" class="button-icon button ion-android-search" style="width:100%; height:100%; font-size:36px; border-color: #ddd; padding: 2px;"></button>
+                    <button ng-click="SearchUsers(searchText)" class="button-icon button button-positive ion-android-search" style="width:100%; height:100%; font-size:36px; border-color: #ddd; padding: 2px;"></button>
                 </div>
             </div>
             <div class="list">
