@@ -13,6 +13,7 @@ using System.Web;
 using Microsoft.Azure; // Namespace for CloudConfigurationManager
 using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
 using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types
+using System.Web.Mvc;
 
 namespace MyLeague.Data.Controllers
 {
@@ -21,10 +22,12 @@ namespace MyLeague.Data.Controllers
 
 
         // GET: api/Leagues
-        public IQueryable<League> GetLeagues()
+        public List<League> GetLeagues()
         {
             using (var db = new MyLeaguesEntities())
-                return db.Leagues;
+            {
+                return db.Leagues.ToList();
+            }
         }
 
         // GET: api/Leagues/5

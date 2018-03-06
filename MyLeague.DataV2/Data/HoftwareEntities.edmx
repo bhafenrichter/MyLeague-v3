@@ -1,0 +1,458 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="HoftwareModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ML_Game">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LeagueID" Type="int" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="OpponentID" Type="int" />
+          <Property Name="UserScore" Type="int" />
+          <Property Name="OpponentScore" Type="int" />
+          <Property Name="CreatedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ML_League">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1000" />
+          <Property Name="LeagueTypeID" Type="int" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="ML_LeagueType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1000" />
+          <Property Name="PictureUrl" Type="nvarchar" MaxLength="4000" />
+        </EntityType>
+        <EntityType Name="ML_User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1000" />
+          <Property Name="PictureUrl" Type="nvarchar" MaxLength="4000" />
+          <Property Name="CreatedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ML_UserLeague">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="LeagueID" Type="int" />
+          <Property Name="Wins" Type="int" />
+          <Property Name="Losses" Type="int" />
+          <Property Name="Ties" Type="int" />
+          <Property Name="PointsScored" Type="int" />
+          <Property Name="PointsAllowed" Type="int" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <Association Name="FK_ML_Game_ML_League">
+          <End Role="ML_League" Type="Self.ML_League" Multiplicity="0..1" />
+          <End Role="ML_Game" Type="Self.ML_Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ML_League">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ML_Game">
+              <PropertyRef Name="LeagueID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ML_Game_ML_User">
+          <End Role="ML_User" Type="Self.ML_User" Multiplicity="0..1" />
+          <End Role="ML_Game" Type="Self.ML_Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ML_User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ML_Game">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ML_Game_ML_User1">
+          <End Role="ML_User" Type="Self.ML_User" Multiplicity="0..1" />
+          <End Role="ML_Game" Type="Self.ML_Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ML_User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ML_Game">
+              <PropertyRef Name="OpponentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ML_League_ML_LeagueType">
+          <End Role="ML_LeagueType" Type="Self.ML_LeagueType" Multiplicity="0..1" />
+          <End Role="ML_League" Type="Self.ML_League" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ML_LeagueType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ML_League">
+              <PropertyRef Name="LeagueTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ML_League_ML_User">
+          <End Role="ML_User" Type="Self.ML_User" Multiplicity="0..1" />
+          <End Role="ML_League" Type="Self.ML_League" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ML_User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ML_League">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ML_UserLeague_ML_League">
+          <End Role="ML_League" Type="Self.ML_League" Multiplicity="0..1" />
+          <End Role="ML_UserLeague" Type="Self.ML_UserLeague" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ML_League">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ML_UserLeague">
+              <PropertyRef Name="LeagueID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ML_UserLeague_ML_User">
+          <End Role="ML_User" Type="Self.ML_User" Multiplicity="0..1" />
+          <End Role="ML_UserLeague" Type="Self.ML_UserLeague" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ML_User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ML_UserLeague">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HoftwareModelStoreContainer">
+          <EntitySet Name="ML_Game" EntityType="Self.ML_Game" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ML_League" EntityType="Self.ML_League" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ML_LeagueType" EntityType="Self.ML_LeagueType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ML_User" EntityType="Self.ML_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ML_UserLeague" EntityType="Self.ML_UserLeague" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ML_Game_ML_League" Association="Self.FK_ML_Game_ML_League">
+            <End Role="ML_League" EntitySet="ML_League" />
+            <End Role="ML_Game" EntitySet="ML_Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ML_Game_ML_User" Association="Self.FK_ML_Game_ML_User">
+            <End Role="ML_User" EntitySet="ML_User" />
+            <End Role="ML_Game" EntitySet="ML_Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ML_Game_ML_User1" Association="Self.FK_ML_Game_ML_User1">
+            <End Role="ML_User" EntitySet="ML_User" />
+            <End Role="ML_Game" EntitySet="ML_Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ML_League_ML_LeagueType" Association="Self.FK_ML_League_ML_LeagueType">
+            <End Role="ML_LeagueType" EntitySet="ML_LeagueType" />
+            <End Role="ML_League" EntitySet="ML_League" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ML_League_ML_User" Association="Self.FK_ML_League_ML_User">
+            <End Role="ML_User" EntitySet="ML_User" />
+            <End Role="ML_League" EntitySet="ML_League" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ML_UserLeague_ML_League" Association="Self.FK_ML_UserLeague_ML_League">
+            <End Role="ML_League" EntitySet="ML_League" />
+            <End Role="ML_UserLeague" EntitySet="ML_UserLeague" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ML_UserLeague_ML_User" Association="Self.FK_ML_UserLeague_ML_User">
+            <End Role="ML_User" EntitySet="ML_User" />
+            <End Role="ML_UserLeague" EntitySet="ML_UserLeague" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HoftwareModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ML_Game">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LeagueID" Type="Int32" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="OpponentID" Type="Int32" />
+          <Property Name="UserScore" Type="Int32" />
+          <Property Name="OpponentScore" Type="Int32" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ML_League" Relationship="Self.FK_ML_Game_ML_League" FromRole="ML_Game" ToRole="ML_League" />
+          <NavigationProperty Name="ML_User" Relationship="Self.FK_ML_Game_ML_User" FromRole="ML_Game" ToRole="ML_User" />
+          <NavigationProperty Name="ML_User1" Relationship="Self.FK_ML_Game_ML_User1" FromRole="ML_Game" ToRole="ML_User" />
+        </EntityType>
+        <EntityType Name="ML_League">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="LeagueTypeID" Type="Int32" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <NavigationProperty Name="ML_Game" Relationship="Self.FK_ML_Game_ML_League" FromRole="ML_League" ToRole="ML_Game" />
+          <NavigationProperty Name="ML_LeagueType" Relationship="Self.FK_ML_League_ML_LeagueType" FromRole="ML_League" ToRole="ML_LeagueType" />
+          <NavigationProperty Name="ML_User" Relationship="Self.FK_ML_League_ML_User" FromRole="ML_League" ToRole="ML_User" />
+          <NavigationProperty Name="ML_UserLeague" Relationship="Self.FK_ML_UserLeague_ML_League" FromRole="ML_League" ToRole="ML_UserLeague" />
+        </EntityType>
+        <EntityType Name="ML_LeagueType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="PictureUrl" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ML_League" Relationship="Self.FK_ML_League_ML_LeagueType" FromRole="ML_LeagueType" ToRole="ML_League" />
+        </EntityType>
+        <EntityType Name="ML_User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="PictureUrl" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ML_Game" Relationship="Self.FK_ML_Game_ML_User" FromRole="ML_User" ToRole="ML_Game" />
+          <NavigationProperty Name="ML_Game1" Relationship="Self.FK_ML_Game_ML_User1" FromRole="ML_User" ToRole="ML_Game" />
+          <NavigationProperty Name="ML_League" Relationship="Self.FK_ML_League_ML_User" FromRole="ML_User" ToRole="ML_League" />
+          <NavigationProperty Name="ML_UserLeague" Relationship="Self.FK_ML_UserLeague_ML_User" FromRole="ML_User" ToRole="ML_UserLeague" />
+        </EntityType>
+        <EntityType Name="ML_UserLeague">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="LeagueID" Type="Int32" />
+          <Property Name="Wins" Type="Int32" />
+          <Property Name="Losses" Type="Int32" />
+          <Property Name="Ties" Type="Int32" />
+          <Property Name="PointsScored" Type="Int32" />
+          <Property Name="PointsAllowed" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="ML_League" Relationship="Self.FK_ML_UserLeague_ML_League" FromRole="ML_UserLeague" ToRole="ML_League" />
+          <NavigationProperty Name="ML_User" Relationship="Self.FK_ML_UserLeague_ML_User" FromRole="ML_UserLeague" ToRole="ML_User" />
+        </EntityType>
+        <Association Name="FK_ML_Game_ML_League">
+          <End Role="ML_League" Type="Self.ML_League" Multiplicity="0..1" />
+          <End Role="ML_Game" Type="Self.ML_Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ML_League">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ML_Game">
+              <PropertyRef Name="LeagueID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ML_Game_ML_User">
+          <End Role="ML_User" Type="Self.ML_User" Multiplicity="0..1" />
+          <End Role="ML_Game" Type="Self.ML_Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ML_User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ML_Game">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ML_Game_ML_User1">
+          <End Role="ML_User" Type="Self.ML_User" Multiplicity="0..1" />
+          <End Role="ML_Game" Type="Self.ML_Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ML_User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ML_Game">
+              <PropertyRef Name="OpponentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ML_League_ML_LeagueType">
+          <End Role="ML_LeagueType" Type="Self.ML_LeagueType" Multiplicity="0..1" />
+          <End Role="ML_League" Type="Self.ML_League" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ML_LeagueType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ML_League">
+              <PropertyRef Name="LeagueTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ML_League_ML_User">
+          <End Role="ML_User" Type="Self.ML_User" Multiplicity="0..1" />
+          <End Role="ML_League" Type="Self.ML_League" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ML_User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ML_League">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ML_UserLeague_ML_League">
+          <End Role="ML_League" Type="Self.ML_League" Multiplicity="0..1" />
+          <End Role="ML_UserLeague" Type="Self.ML_UserLeague" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ML_League">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ML_UserLeague">
+              <PropertyRef Name="LeagueID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ML_UserLeague_ML_User">
+          <End Role="ML_User" Type="Self.ML_User" Multiplicity="0..1" />
+          <End Role="ML_UserLeague" Type="Self.ML_UserLeague" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ML_User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ML_UserLeague">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HoftwareEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ML_Game" EntityType="Self.ML_Game" />
+          <EntitySet Name="ML_League" EntityType="Self.ML_League" />
+          <EntitySet Name="ML_LeagueType" EntityType="Self.ML_LeagueType" />
+          <EntitySet Name="ML_User" EntityType="Self.ML_User" />
+          <EntitySet Name="ML_UserLeague" EntityType="Self.ML_UserLeague" />
+          <AssociationSet Name="FK_ML_Game_ML_League" Association="Self.FK_ML_Game_ML_League">
+            <End Role="ML_League" EntitySet="ML_League" />
+            <End Role="ML_Game" EntitySet="ML_Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ML_Game_ML_User" Association="Self.FK_ML_Game_ML_User">
+            <End Role="ML_User" EntitySet="ML_User" />
+            <End Role="ML_Game" EntitySet="ML_Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ML_Game_ML_User1" Association="Self.FK_ML_Game_ML_User1">
+            <End Role="ML_User" EntitySet="ML_User" />
+            <End Role="ML_Game" EntitySet="ML_Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ML_League_ML_LeagueType" Association="Self.FK_ML_League_ML_LeagueType">
+            <End Role="ML_LeagueType" EntitySet="ML_LeagueType" />
+            <End Role="ML_League" EntitySet="ML_League" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ML_League_ML_User" Association="Self.FK_ML_League_ML_User">
+            <End Role="ML_User" EntitySet="ML_User" />
+            <End Role="ML_League" EntitySet="ML_League" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ML_UserLeague_ML_League" Association="Self.FK_ML_UserLeague_ML_League">
+            <End Role="ML_League" EntitySet="ML_League" />
+            <End Role="ML_UserLeague" EntitySet="ML_UserLeague" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ML_UserLeague_ML_User" Association="Self.FK_ML_UserLeague_ML_User">
+            <End Role="ML_User" EntitySet="ML_User" />
+            <End Role="ML_UserLeague" EntitySet="ML_UserLeague" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HoftwareModelStoreContainer" CdmEntityContainer="HoftwareEntities">
+          <EntitySetMapping Name="ML_Game">
+            <EntityTypeMapping TypeName="HoftwareModel.ML_Game">
+              <MappingFragment StoreEntitySet="ML_Game">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="LeagueID" ColumnName="LeagueID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="OpponentID" ColumnName="OpponentID" />
+                <ScalarProperty Name="UserScore" ColumnName="UserScore" />
+                <ScalarProperty Name="OpponentScore" ColumnName="OpponentScore" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ML_League">
+            <EntityTypeMapping TypeName="HoftwareModel.ML_League">
+              <MappingFragment StoreEntitySet="ML_League">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LeagueTypeID" ColumnName="LeagueTypeID" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ML_LeagueType">
+            <EntityTypeMapping TypeName="HoftwareModel.ML_LeagueType">
+              <MappingFragment StoreEntitySet="ML_LeagueType">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PictureUrl" ColumnName="PictureUrl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ML_User">
+            <EntityTypeMapping TypeName="HoftwareModel.ML_User">
+              <MappingFragment StoreEntitySet="ML_User">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PictureUrl" ColumnName="PictureUrl" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ML_UserLeague">
+            <EntityTypeMapping TypeName="HoftwareModel.ML_UserLeague">
+              <MappingFragment StoreEntitySet="ML_UserLeague">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="LeagueID" ColumnName="LeagueID" />
+                <ScalarProperty Name="Wins" ColumnName="Wins" />
+                <ScalarProperty Name="Losses" ColumnName="Losses" />
+                <ScalarProperty Name="Ties" ColumnName="Ties" />
+                <ScalarProperty Name="PointsScored" ColumnName="PointsScored" />
+                <ScalarProperty Name="PointsAllowed" ColumnName="PointsAllowed" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

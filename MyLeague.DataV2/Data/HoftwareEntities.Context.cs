@@ -7,18 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MyLeague.Data
+namespace MyLeague.DataV2.Data
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class MyLeaguesEntities : DbContext
+    public partial class HoftwareEntities : DbContext
     {
-        public MyLeaguesEntities()
-            : base("name=MyLeaguesEntities")
+        public HoftwareEntities()
+            : base("name=HoftwareEntities")
         {
-            Configuration.ProxyCreationEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -26,11 +25,10 @@ namespace MyLeague.Data
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Game> Games { get; set; }
-        public virtual DbSet<League> Leagues { get; set; }
-        public virtual DbSet<LeagueRequest> LeagueRequests { get; set; }
-        public virtual DbSet<UserLeague> UserLeagues { get; set; }
-        public virtual DbSet<SecurityToken> SecurityTokens { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<ML_Game> ML_Game { get; set; }
+        public virtual DbSet<ML_League> ML_League { get; set; }
+        public virtual DbSet<ML_LeagueType> ML_LeagueType { get; set; }
+        public virtual DbSet<ML_User> ML_User { get; set; }
+        public virtual DbSet<ML_UserLeague> ML_UserLeague { get; set; }
     }
 }
