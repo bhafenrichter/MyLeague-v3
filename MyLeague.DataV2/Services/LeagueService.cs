@@ -24,6 +24,14 @@ namespace MyLeague.DataV2.Services
             }
         }
 
+        internal static ML_User GetUser(int ID)
+        {
+            using (var db = new HoftwareEntities())
+            {
+                return db.ML_User.Include("ML_UserLeague").Where(x => x.ID == ID).FirstOrDefault();
+            }
+        }
+
         internal static List<ML_Game> GetGamesForLeague(int LeagueID)
         {
             using (var db = new HoftwareEntities())
@@ -63,6 +71,30 @@ namespace MyLeague.DataV2.Services
                 return e.ToString();
             }
             
+        }
+
+        internal static string SaveUser(ML_User User)
+        {
+            try
+            {
+                using (var db = new HoftwareEntities())
+                {
+                    if (User.ID == 0)
+                    {
+                        db.Entry(User).State = System.Data.Entity.EntityState.Added;
+                    }
+                    else
+                    {
+                        db.Entry(User).State = System.Data.Entity.EntityState.Modified;
+                    }
+                    db.SaveChanges();
+                }
+                return "User successfully saved.";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
         }
 
         internal static object SaveUserLeague(ML_UserLeague User)

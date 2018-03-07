@@ -15,7 +15,13 @@ namespace MyLeague.DataV2.Controllers
         [System.Web.Mvc.Route("/api/GetLeagues")]
         public IHttpActionResult GetLeagues()
         {
-            return Ok(LeagueService.GetLeagues());
+            return Ok(Json(LeagueService.GetLeagues()));
+        }
+
+        [System.Web.Mvc.Route("/api/GetUser")]
+        public IHttpActionResult GetUser(int ID)
+        {
+            return Ok(LeagueService.GetUser(ID));
         }
 
         [System.Web.Mvc.Route("/api/GetLeaguesForUser")]
@@ -40,6 +46,14 @@ namespace MyLeague.DataV2.Controllers
         public IHttpActionResult SaveGame(ML_Game Game)
         {
             var Message = LeagueService.SaveGame(Game);
+            return Ok(Message);
+        }
+
+
+        [System.Web.Mvc.Route("/api/SaveUser")]
+        public IHttpActionResult SaveGame(ML_User User)
+        {
+            var Message = LeagueService.SaveUser(User);
             return Ok(Message);
         }
 
