@@ -186,7 +186,6 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LeagueController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Data\HoftwareEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -8,11 +8,11 @@ namespace MyLeague.DataV2.Services
 {
     public class LeagueService
     {
-        internal static List<ML_League> GetLeagues()
+        internal static dynamic GetLeagues()
         {
             using (var db = new HoftwareEntities())
             {
-                return db.ML_League.Include("ML_User").ToList();
+                return db.ML_League.Include("ML_User").Select(x => new { x.CreatedBy, x.CreatedOn, x.ID, x.LeagueTypeID, x.Name, x.ML_User }).ToList();
             }
         }
 

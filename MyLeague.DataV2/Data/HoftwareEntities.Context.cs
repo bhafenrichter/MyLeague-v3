@@ -19,6 +19,7 @@ namespace MyLeague.DataV2.Data
             : base("name=HoftwareEntities")
         {
             Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
