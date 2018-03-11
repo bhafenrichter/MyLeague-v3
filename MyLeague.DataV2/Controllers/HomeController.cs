@@ -16,20 +16,17 @@ namespace MyLeague.DataV2.Controllers
 
             return View();
         }
-
-        [System.Web.Mvc.Route("/api/GetLeagues")]
+        
         public JsonResult GetLeagues()
         {
             return Json(LeagueService.GetLeagues(), JsonRequestBehavior.AllowGet);
         }
-
-        [System.Web.Mvc.Route("/api/GetUser")]
+        
         public JsonResult GetUser(int ID)
         {
             return Json(LeagueService.GetUser(ID), JsonRequestBehavior.AllowGet);
         }
-
-        [System.Web.Mvc.Route("/api/GetLeaguesForUser")]
+        
         public JsonResult GetLeaguesForUser(int UserID)
         {
             return Json(LeagueService.GetLeaguesForUser(UserID), JsonRequestBehavior.AllowGet);
