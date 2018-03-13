@@ -59,10 +59,24 @@ namespace MyLeague.DataV2.Controllers
             return Json(Message, JsonRequestBehavior.AllowGet);
         }
 
-        [System.Web.Mvc.Route("/api/SaveLeague")]
+        [HttpPost]
         public JsonResult SaveLeague(ML_League League)
         {
             var Message = LeagueService.SaveLeague(League);
+
+            var UserLeague = new ML_UserLeague()
+            {
+                IsDeleted = false,
+                LeagueID = League.ID,
+                Losses = 0,
+                PointsAllowed = 0,
+                PointsScored = 0,
+                Ties = 0,
+                Wins = 0,
+                UserID = 1
+            };
+
+            LeagueService.SaveUserLeague(UserLeague);
             return Json(Message, JsonRequestBehavior.AllowGet);
         }
 
@@ -71,6 +85,11 @@ namespace MyLeague.DataV2.Controllers
         {
             var Message = LeagueService.SaveUserLeague(User);
             return Json(Message, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetLeagueTypesForSearch(string Search)
+        {
+            return Json(LeagueService.GetLeagueTypesForSearch(Search), JsonRequestBehavior.AllowGet);
         }
     }
 }

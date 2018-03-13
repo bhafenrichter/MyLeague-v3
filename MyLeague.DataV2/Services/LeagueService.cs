@@ -97,6 +97,14 @@ namespace MyLeague.DataV2.Services
             }
         }
 
+        internal static List<ML_LeagueType> GetLeagueTypesForSearch(string Search)
+        {
+            using (var db = new HoftwareEntities())
+            {
+                return db.ML_LeagueType.Where(x => x.Name.Contains(Search)).Take(10).ToList();
+            }
+        }
+
         internal static object SaveUserLeague(ML_UserLeague User)
         {
             try
