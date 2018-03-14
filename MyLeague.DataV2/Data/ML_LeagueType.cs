@@ -21,7 +21,7 @@ namespace MyLeague.DataV2.Data
         }
     
         public int ID { get; set; }
-        public string Name { get; set; }
+        public string LeagueType { get; set; }
         public string PictureUrl { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

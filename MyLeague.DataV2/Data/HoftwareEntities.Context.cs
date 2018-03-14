@@ -18,8 +18,6 @@ namespace MyLeague.DataV2.Data
         public HoftwareEntities()
             : base("name=HoftwareEntities")
         {
-            Configuration.LazyLoadingEnabled = false;
-            Configuration.ProxyCreationEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -29,8 +27,8 @@ namespace MyLeague.DataV2.Data
     
         public virtual DbSet<ML_Game> ML_Game { get; set; }
         public virtual DbSet<ML_League> ML_League { get; set; }
-        public virtual DbSet<ML_LeagueType> ML_LeagueType { get; set; }
         public virtual DbSet<ML_User> ML_User { get; set; }
         public virtual DbSet<ML_UserLeague> ML_UserLeague { get; set; }
+        public virtual DbSet<ML_LeagueType> ML_LeagueType { get; set; }
     }
 }

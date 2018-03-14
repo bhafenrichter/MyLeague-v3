@@ -29,9 +29,9 @@ namespace MyLeague.DataV2.Data
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ML_Game> ML_Game { get; set; }
-        public virtual ML_LeagueType ML_LeagueType { get; set; }
         public virtual ML_User ML_User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ML_UserLeague> ML_UserLeague { get; set; }
+        public virtual ML_LeagueType ML_LeagueType { get; set; }
     }
 }

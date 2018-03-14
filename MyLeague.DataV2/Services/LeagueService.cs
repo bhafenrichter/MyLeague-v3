@@ -1,4 +1,5 @@
 ﻿using MyLeague.DataV2.Data;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,11 @@ namespace MyLeague.DataV2.Services
             }
         }
 
-        internal static List<ML_League> GetLeaguesForUser(int UserID)
+        internal static dynamic GetLeaguesForUser(int UserID)
         {
             using (var db = new HoftwareEntities())
             {
-                return db.ML_UserLeague.Include("ML_League").Where(x => x.UserID == UserID).Select(x => x.ML_League).ToList();
+                return db.ML_UserLeague.Where(x => x.UserID == UserID).Select(x => x.ML_League).Select(y => new { y.ID, y.Name, y.ML_LeagueType.LeagueType }).ToList();
             }
         }
 
@@ -101,7 +102,7 @@ namespace MyLeague.DataV2.Services
         {
             using (var db = new HoftwareEntities())
             {
-                return db.ML_LeagueType.Where(x => x.Name.Contains(Search)).Take(10).ToList();
+                return db.ML_LeagueType.Where(x => x.LeagueType.Contains(Search)).Take(10).ToList();
             }
         }
 

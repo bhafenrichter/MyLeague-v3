@@ -7,16 +7,16 @@
       <Diagram DiagramId="7ef8a00a582d4b998aec4c371cf44b60" Name="Diagram1">
         <EntityTypeShape EntityType="HoftwareModel.ML_Game" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
         <EntityTypeShape EntityType="HoftwareModel.ML_League" Width="1.5" PointX="6" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="HoftwareModel.ML_LeagueType" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="HoftwareModel.ML_User" Width="1.5" PointX="0.75" PointY="4.375" IsExpanded="true" />
         <EntityTypeShape EntityType="HoftwareModel.ML_UserLeague" Width="1.5" PointX="8.25" PointY="4.125" IsExpanded="true" />
         <AssociationConnector Association="HoftwareModel.FK_ML_Game_ML_League" ManuallyRouted="false" />
         <AssociationConnector Association="HoftwareModel.FK_ML_Game_ML_User" ManuallyRouted="false" />
         <AssociationConnector Association="HoftwareModel.FK_ML_Game_ML_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="HoftwareModel.FK_ML_League_ML_LeagueType" ManuallyRouted="false" />
         <AssociationConnector Association="HoftwareModel.FK_ML_League_ML_User" ManuallyRouted="false" />
         <AssociationConnector Association="HoftwareModel.FK_ML_UserLeague_ML_League" ManuallyRouted="false" />
         <AssociationConnector Association="HoftwareModel.FK_ML_UserLeague_ML_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="HoftwareModel.ML_LeagueType" Width="1.5" PointX="0.75" PointY="0.875" />
+        <AssociationConnector Association="HoftwareModel.FK_ML_League_ML_LeagueType" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

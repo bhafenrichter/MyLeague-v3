@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="HoftwareModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="HoftwareModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ML_Game">
           <Key>
             <PropertyRef Name="ID" />
@@ -31,15 +31,15 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LeagueType" Type="nvarchar" MaxLength="1000" />
           <Property Name="PictureUrl" Type="nvarchar" MaxLength="4000" />
         </EntityType>
         <EntityType Name="ML_User">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="1000" />
           <Property Name="PictureUrl" Type="nvarchar" MaxLength="4000" />
           <Property Name="CreatedOn" Type="datetime" />
@@ -177,8 +177,7 @@
             <End Role="ML_UserLeague" EntitySet="ML_UserLeague" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HoftwareModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -207,18 +206,9 @@
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Int32" />
           <NavigationProperty Name="ML_Game" Relationship="Self.FK_ML_Game_ML_League" FromRole="ML_League" ToRole="ML_Game" />
-          <NavigationProperty Name="ML_LeagueType" Relationship="Self.FK_ML_League_ML_LeagueType" FromRole="ML_League" ToRole="ML_LeagueType" />
           <NavigationProperty Name="ML_User" Relationship="Self.FK_ML_League_ML_User" FromRole="ML_League" ToRole="ML_User" />
           <NavigationProperty Name="ML_UserLeague" Relationship="Self.FK_ML_UserLeague_ML_League" FromRole="ML_League" ToRole="ML_UserLeague" />
-        </EntityType>
-        <EntityType Name="ML_LeagueType">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="PictureUrl" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ML_League" Relationship="Self.FK_ML_League_ML_LeagueType" FromRole="ML_LeagueType" ToRole="ML_League" />
+          <NavigationProperty Name="ML_LeagueType" Relationship="HoftwareModel.FK_ML_League_ML_LeagueType" FromRole="ML_League" ToRole="ML_LeagueType" />
         </EntityType>
         <EntityType Name="ML_User">
           <Key>
@@ -285,18 +275,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ML_League_ML_LeagueType">
-          <End Role="ML_LeagueType" Type="Self.ML_LeagueType" Multiplicity="0..1" />
-          <End Role="ML_League" Type="Self.ML_League" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ML_LeagueType">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ML_League">
-              <PropertyRef Name="LeagueTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ML_League_ML_User">
           <End Role="ML_User" Type="Self.ML_User" Multiplicity="0..1" />
           <End Role="ML_League" Type="Self.ML_League" Multiplicity="*" />
@@ -336,7 +314,6 @@
         <EntityContainer Name="HoftwareEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ML_Game" EntityType="Self.ML_Game" />
           <EntitySet Name="ML_League" EntityType="Self.ML_League" />
-          <EntitySet Name="ML_LeagueType" EntityType="Self.ML_LeagueType" />
           <EntitySet Name="ML_User" EntityType="Self.ML_User" />
           <EntitySet Name="ML_UserLeague" EntityType="Self.ML_UserLeague" />
           <AssociationSet Name="FK_ML_Game_ML_League" Association="Self.FK_ML_Game_ML_League">
@@ -351,10 +328,6 @@
             <End Role="ML_User" EntitySet="ML_User" />
             <End Role="ML_Game" EntitySet="ML_Game" />
           </AssociationSet>
-          <AssociationSet Name="FK_ML_League_ML_LeagueType" Association="Self.FK_ML_League_ML_LeagueType">
-            <End Role="ML_LeagueType" EntitySet="ML_LeagueType" />
-            <End Role="ML_League" EntitySet="ML_League" />
-          </AssociationSet>
           <AssociationSet Name="FK_ML_League_ML_User" Association="Self.FK_ML_League_ML_User">
             <End Role="ML_User" EntitySet="ML_User" />
             <End Role="ML_League" EntitySet="ML_League" />
@@ -367,7 +340,33 @@
             <End Role="ML_User" EntitySet="ML_User" />
             <End Role="ML_UserLeague" EntitySet="ML_UserLeague" />
           </AssociationSet>
+          <EntitySet Name="ML_LeagueType" EntityType="HoftwareModel.ML_LeagueType" />
+          <AssociationSet Name="FK_ML_League_ML_LeagueType" Association="HoftwareModel.FK_ML_League_ML_LeagueType">
+            <End Role="ML_LeagueType" EntitySet="ML_LeagueType" />
+            <End Role="ML_League" EntitySet="ML_League" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="ML_LeagueType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LeagueType" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="PictureUrl" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ML_League" Relationship="HoftwareModel.FK_ML_League_ML_LeagueType" FromRole="ML_LeagueType" ToRole="ML_League" />
+        </EntityType>
+        <Association Name="FK_ML_League_ML_LeagueType">
+          <End Type="HoftwareModel.ML_LeagueType" Role="ML_LeagueType" Multiplicity="0..1" />
+          <End Type="HoftwareModel.ML_League" Role="ML_League" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ML_LeagueType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ML_League">
+              <PropertyRef Name="LeagueTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -398,15 +397,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ML_LeagueType">
-            <EntityTypeMapping TypeName="HoftwareModel.ML_LeagueType">
-              <MappingFragment StoreEntitySet="ML_LeagueType">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="PictureUrl" ColumnName="PictureUrl" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ML_User">
             <EntityTypeMapping TypeName="HoftwareModel.ML_User">
               <MappingFragment StoreEntitySet="ML_User">
@@ -429,6 +419,15 @@
                 <ScalarProperty Name="PointsScored" ColumnName="PointsScored" />
                 <ScalarProperty Name="PointsAllowed" ColumnName="PointsAllowed" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ML_LeagueType">
+            <EntityTypeMapping TypeName="HoftwareModel.ML_LeagueType">
+              <MappingFragment StoreEntitySet="ML_LeagueType">
+                <ScalarProperty Name="PictureUrl" ColumnName="PictureUrl" />
+                <ScalarProperty Name="LeagueType" ColumnName="LeagueType" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
