@@ -98,11 +98,11 @@ namespace MyLeague.DataV2.Services
             }
         }
 
-        internal static List<ML_LeagueType> GetLeagueTypesForSearch(string Search)
+        internal static dynamic GetLeagueTypesForSearch(string Search)
         {
             using (var db = new HoftwareEntities())
             {
-                return db.ML_LeagueType.Where(x => x.LeagueType.Contains(Search)).Take(10).ToList();
+                return db.ML_LeagueType.Where(x => x.LeagueType.Contains(Search)).Select(x => new { x.ID, x.LeagueType, x.PictureUrl }).Take(10).ToList();
             }
         }
 
